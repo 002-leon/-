@@ -1,5 +1,5 @@
 // DeepSeek API配置
-const DEEPSEEK_API_KEY = 'sk-61d62661ccb34f26b29c5d081ee3909a';
+const DEEPSEEK_API_KEY = '输入你的deepseek api';
 const DEEPSEEK_API_URL = 'https://api.deepseek.com/v1/chat/completions';
 
 // 创建AI聊天窗口的HTML结构
