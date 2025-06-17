@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>搜索 - 中医文化知识库</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/ai-chat.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<style>
+    :root {
+        --primary-color: #8B4513;
+        --secondary-color: #D2691E;
+        --accent-color: #CD853F;
+        --text-color: #4A4A4A;
+        --light-bg: #FDF5E6;
+        --white: #FFFFFF;
+        --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Microsoft YaHei', sans-serif;
+        line-height: 1.6;
+        color: var(--text-color);
+        background: var(--light-bg);
+        min-height: 100vh;
+        padding-top: 80px; /* 为固定定位的header留出空间 */
+    }
+
+    header {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        box-shadow: var(--shadow);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        border-bottom: 2px solid var(--primary-color);
+        height: 80px;
+    }
+
+    .search-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .search-box {
+        background: var(--white);
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: var(--shadow);
+        margin-bottom: 2rem;
+        border: 1px solid var(--accent-color);
+    }
+
+    .search-input-group {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .search-input {
+        flex: 1;
+        padding: 1rem;
+        border: 2px solid var(--accent-color);
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s;
+    }
+
+    .search-input:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.1);
+    }
+
+    .search-button {
+        background: var(--primary-color);
+        color: var(--white);
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s;
+    }
+
+    .search-button:hover {
+        background: var(--secondary-color);
+        transform: translateY(-2px);
+    }
+
+    .search-filters {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+    }
+
+    .filter-group {
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .filter-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: var(--primary-color);
+        font-weight: bold;
+    }
+
+    .filter-select {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid var(--accent-color);
+        border-radius: 4px;
+        background: var(--white);
+    }
+
+    .search-results {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .result-card {
+        background: var(--white);
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        transition: all 0.3s;
+        border: 1px solid var(--accent-color);
+    }
+
+    .result-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .result-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .result-content {
+        padding: 1.5rem;
+    }
+
+    .result-title {
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+        font-size: 1.2rem;
+    }
+
+    .result-description {
+        color: var(--text-color);
+        margin-bottom: 1rem;
+    }
+
+    .result-meta {
+        display: flex;
+        justify-content: space-between;
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+        body {
+            padding-top: 60px;
+        }
+
+        header {
+            height: 60px;
+        }
+
+        .search-container {
+            padding: 1rem;
+        }
+
+        .search-input-group {
+            flex-direction: column;
+        }
+
+        .search-button {
+            width: 100%;
+        }
+
+        .search-filters {
+            flex-direction: column;
+        }
+
+        .filter-group {
+            width: 100%;
+        }
+    }
+</style>
+<script src="../js/main.js"></script>
+<script src="../js/ai-chat.js"></script>
+</body>
+</html> 

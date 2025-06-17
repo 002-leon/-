@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中医理论 - 中医文化知识库</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/ai-chat.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #8B4513;
+            --secondary-color: #D2691E;
+            --accent-color: #CD853F;
+            --text-color: #4A4A4A;
+            --light-bg: #FDF5E6;
+            --white: #FFFFFF;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: var(--light-bg);
+            min-height: 100vh;
+            padding-top: 80px; /* 为固定定位的header留出空间 */
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            border-bottom: 2px solid var(--primary-color);
+            height: 80px;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .theory-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .theory-section {
+            background: var(--white);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--accent-color);
+        }
+        
+        .theory-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+        }
+        
+        .theory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .theory-card {
+            background: var(--light-bg);
+            padding: 1.5rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--accent-color);
+        }
+        
+        .theory-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .theory-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .classic-text {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: var(--white);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .classic-text h4 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .classic-text p {
+            font-style: italic;
+            line-height: 1.8;
+            color: var(--text-color);
+        }
+
+        .theory-image {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .theory-timeline {
+            position: relative;
+            padding-left: 2rem;
+            margin: 2rem 0;
+        }
+
+        .theory-timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--primary-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: var(--light-bg);
+            border-radius: 8px;
+            border: 1px solid var(--accent-color);
+            cursor: pointer;
+            transition: all 0.5s ease;
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+        }
+
+        .timeline-item:hover {
+            transform: translateX(10px);
+            box-shadow: var(--shadow);
+        }
+
+        .timeline-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 2px solid var(--primary-color);
+            transition: all 0.5s ease;
+        }
+
+        .timeline-item:hover .timeline-image {
+            transform: scale(1.05);
+            box-shadow: var(--shadow);
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.5rem;
+            top: 2rem;
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            background: var(--primary-color);
+            border: 2px solid var(--white);
+            transition: all 0.5s ease;
+        }
+
+        .timeline-item:hover::before {
+            transform: scale(1.2);
+            background: var(--secondary-color);
+        }
+
+        .timeline-item h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .timeline-item h3::after {
+            content: '\f107';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: 0.8em;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .timeline-item:hover h3::after {
+            opacity: 1;
+        }
+
+        .timeline-details {
+            display: none;
+            margin-top: 1rem;
+            padding: 1.5rem;
+            background: var(--white);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+            animation: fadeIn 0.8s ease;
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        .timeline-item:hover .timeline-details {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .timeline-details h4 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .timeline-details ul {
+            list-style: none;
+            padding-left: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .timeline-details li {
+            margin-bottom: 0.8rem;
+            position: relative;
+            padding-left: 1.2rem;
+            line-height: 1.6;
+        }
+
+        .timeline-details li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            50% {
+                opacity: 0.5;
+                transform: translateY(-5px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        footer {
+            background: var(--primary-color);
+            color: var(--white);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding-top: 60px;
+            }
+
+            header {
+                height: 60px;
+            }
+
+            nav {
+                padding: 0 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .theory-content {
+                padding: 1rem;
+            }
+
+            .theory-section {
+                padding: 1.5rem;
+            }
+
+            .theory-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">中医文化</div>
+            <ul class="nav-links">
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="theory.html">中医理论</a></li>
+                <li><a href="herbs.html">中药知识</a></li>
+                <li><a href="treatment.html">治疗方法</a></li>
+                <li><a href="famous-doctors.html">名医风采</a></li>
+                <li><a href="quiz.html">体质测试</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="theory-content">
+        <section class="theory-section">
+            <h2>中医理论发展史</h2>
+            <div class="theory-timeline">
+                <div class="timeline-item">
+                    <img src="../../媒体内容/中医理论/神农.jpg" alt="神农尝百草" class="timeline-image">
+                    <div class="timeline-content">
+                        <h3>远古时期（约前3000年）</h3>
+                        <p>神农尝百草，开创中药学先河</p>
+                        <div class="timeline-details">
+                            <h4>重要事件</h4>
+                            <ul>
+                                <li>神农氏尝百草，发现药物功效</li>
+                                <li>创立"神农本草经"雏形</li>
+                                <li>发展针灸、按摩等治疗方法</li>
+                            </ul>
+                            <h4>历史意义</h4>
+                            <p>为中医药学的发展奠定了基础，开创了药物学研究的先河。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <img src="../../媒体内容/中医理论/黄帝.jpg" alt="黄帝内经" class="timeline-image">
+                    <div class="timeline-content">
+                        <h3>春秋战国（前770-前221年）</h3>
+                        <p>《黄帝内经》成书，奠定中医理论基础</p>
+                        <div class="timeline-details">
+                            <h4>重要著作</h4>
+                            <ul>
+                                <li>《黄帝内经》成书</li>
+                                <li>《难经》问世</li>
+                                <li>《神农本草经》形成</li>
+                            </ul>
+                            <h4>理论发展</h4>
+                            <p>建立了完整的阴阳五行、脏腑经络理论体系，为后世中医发展奠定基础。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <img src="../../媒体内容/中医理论/张仲景——汉.jpg" alt="张仲景" class="timeline-image">
+                    <div class="timeline-content">
+                        <h3>汉代（前206-220年）</h3>
+                        <p>张仲景著《伤寒杂病论》，开创辨证论治体系</p>
+                        <div class="timeline-details">
+                            <h4>重要人物</h4>
+                            <ul>
+                                <li>张仲景著《伤寒杂病论》</li>
+                                <li>华佗创制麻沸散</li>
+                                <li>淳于意著《诊籍》</li>
+                            </ul>
+                            <h4>学术成就</h4>
+                            <p>建立了完整的辨证论治体系，开创了中医临床医学的新纪元。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <img src="../../媒体内容/中医理论/孙思邈——唐.jpg" alt="孙思邈" class="timeline-image">
+                    <div class="timeline-content">
+                        <h3>唐代（618-907年）</h3>
+                        <p>孙思邈著《千金要方》，集大成之作</p>
+                        <div class="timeline-details">
+                            <h4>重要著作</h4>
+                            <ul>
+                                <li>孙思邈《千金要方》</li>
+                                <li>《新修本草》编撰</li>
+                                <li>《外台秘要》成书</li>
+                            </ul>
+                            <h4>医学发展</h4>
+                            <p>医学理论更加系统化，临床经验更加丰富，方剂学得到长足发展。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <img src="../../媒体内容/中医理论/苏颂——宋——本草图经作者.webp" alt="宋代医学" class="timeline-image">
+                    <div class="timeline-content">
+                        <h3>宋代（960-1279年）</h3>
+                        <p>《太平惠民和剂局方》编撰，规范方剂学</p>
+                        <div class="timeline-details">
+                            <h4>重要成就</h4>
+                            <ul>
+                                <li>《太平惠民和剂局方》编撰</li>
+                                <li>《圣济总录》成书</li>
+                                <li>《本草图经》问世</li>
+                            </ul>
+                            <h4>历史意义</h4>
+                            <p>方剂学得到规范化发展，药物学更加系统化，为后世医学发展提供重要参考。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <img src="../../媒体内容/中医理论/刘完素——金元四大家之首.jpeg" alt="金元四大家" class="timeline-image">
+                    <div class="timeline-content">
+                        <h3>金元时期（1115-1368年）</h3>
+                        <p>四大家学说形成，医学理论创新</p>
+                        <div class="timeline-details">
+                            <h4>重要学派</h4>
+                            <ul>
+                                <li>刘完素"寒凉派"</li>
+                                <li>张从正"攻下派"</li>
+                                <li>李杲"补土派"</li>
+                                <li>朱震亨"滋阴派"</li>
+                            </ul>
+                            <h4>理论创新</h4>
+                            <p>各派学说相互补充，丰富了中医理论体系，推动了临床医学的发展。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <img src="../../媒体内容/中医理论/李时珍.jpeg" alt="明清医学" class="timeline-image">
+                    <div class="timeline-content">
+                        <h3>明清时期（1368-1911年）</h3>
+                        <p>温病学说兴起，医学理论完善</p>
+                        <div class="timeline-details">
+                            <h4>重要著作</h4>
+                            <ul>
+                                <li>《本草纲目》编撰</li>
+                                <li>《温病条辨》成书</li>
+                                <li>《医宗金鉴》问世</li>
+                            </ul>
+                            <h4>学术发展</h4>
+                            <p>温病学说形成完整体系，药物学达到顶峰，临床医学更加成熟。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="theory-section">
+            <h2>阴阳五行学说</h2>
+            <p>阴阳五行学说是中医理论的基础，它认为世界万物都是由阴阳两种对立统一的力量和五行（金、木、水、火、土）构成的。</p>
+            <div class="theory-grid">
+                <div class="theory-card">
+                    <h3>阴阳理论</h3>
+                    <p>阴阳是相互对立又相互依存的两个方面，如寒热、动静、内外等。</p>
+                    <div class="classic-text">
+                        <h4>《黄帝内经·素问》</h4>
+                        <p>"阴阳者，天地之道也，万物之纲纪，变化之父母，生杀之本始，神明之府也。"</p>
+                    </div>
+                </div>
+                <div class="theory-card">
+                    <h3>五行相生</h3>
+                    <p>木生火，火生土，土生金，金生水，水生木。</p>
+                    <div class="classic-text">
+                        <h4>《黄帝内经·素问》</h4>
+                        <p>"五行者，金木水火土也，更贵更贱，以知生死，以决成败。"</p>
+                    </div>
+                </div>
+                <div class="theory-card">
+                    <h3>五行相克</h3>
+                    <p>木克土，土克水，水克火，火克金，金克木。</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="theory-section">
+            <h2>脏腑经络</h2>
+            <p>中医认为人体有五脏六腑，通过经络系统相互联系，共同维持生命活动。</p>
+            <div class="theory-grid">
+                <div class="theory-card">
+                    <h3>五脏</h3>
+                    <p>心、肝、脾、肺、肾</p>
+                    <div class="classic-text">
+                        <h4>《黄帝内经·灵枢》</h4>
+                        <p>"五脏者，所以藏精神血气魂魄者也。"</p>
+                    </div>
+                </div>
+                <div class="theory-card">
+                    <h3>六腑</h3>
+                    <p>胆、胃、小肠、大肠、膀胱、三焦</p>
+                </div>
+                <div class="theory-card">
+                    <h3>经络系统</h3>
+                    <p>十二正经、奇经八脉</p>
+                    <div class="classic-text">
+                        <h4>《黄帝内经·灵枢》</h4>
+                        <p>"经脉者，所以决死生，处百病，调虚实，不可不通。"</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="theory-section">
+            <h2>气血津液</h2>
+            <p>气血津液是维持人体生命活动的基本物质。</p>
+            <div class="theory-grid">
+                <div class="theory-card">
+                    <h3>气</h3>
+                    <p>推动、温煦、防御、固摄、气化</p>
+                    <div class="classic-text">
+                        <h4>《黄帝内经·素问》</h4>
+                        <p>"气者，人之根本也。"</p>
+                    </div>
+                </div>
+                <div class="theory-card">
+                    <h3>血</h3>
+                    <p>营养、滋润、运载</p>
+                </div>
+                <div class="theory-card">
+                    <h3>津液</h3>
+                    <p>滋润、濡养、化生血液</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="theory-section">
+            <h2>《黄帝内经》精要</h2>
+            <div class="theory-grid">
+                <div class="theory-card">
+                    <h3>养生之道</h3>
+                    <div class="classic-text">
+                        <h4>《素问·上古天真论》</h4>
+                        <p>"上古之人，其知道者，法于阴阳，和于术数，食饮有节，起居有常，不妄作劳，故能形与神俱，而尽终其天年，度百岁乃去。"</p>
+                    </div>
+                </div>
+                <div class="theory-card">
+                    <h3>治病原则</h3>
+                    <div class="classic-text">
+                        <h4>《素问·阴阳应象大论》</h4>
+                        <p>"治病必求于本。"</p>
+                    </div>
+                </div>
+                <div class="theory-card">
+                    <h3>预防思想</h3>
+                    <div class="classic-text">
+                        <h4>《素问·四气调神大论》</h4>
+                        <p>"圣人不治已病治未病，不治已乱治未乱。"</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2024 中医文化知识库 - 传承千年智慧</p>
+    </footer>
+    <script src="../js/main.js"></script>
+    <script src="../js/ai-chat.js"></script>
+</body>
+</html> 

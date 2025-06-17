@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>治疗方法 - 中医文化知识库</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/ai-chat.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #8B4513;
+            --secondary-color: #D2691E;
+            --accent-color: #CD853F;
+            --text-color: #4A4A4A;
+            --light-bg: #FDF5E6;
+            --white: #FFFFFF;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --caution-bg: #FFF3E0;
+            --caution-border: #FFE0B2;
+            --caution-text: #F57C00;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: var(--light-bg);
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            border-bottom: 2px solid var(--primary-color);
+            height: 80px;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .treatment-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .treatment-section {
+            background: var(--white);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--accent-color);
+            transition: all 0.3s ease;
+        }
+        
+        .treatment-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .treatment-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+        }
+        
+        .treatment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .treatment-card {
+            background: var(--light-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid var(--accent-color);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .treatment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+        
+        .treatment-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .treatment-card h3::before {
+            content: '•';
+            color: var(--accent-color);
+            font-size: 1.5rem;
+        }
+        
+        .treatment-details {
+            display: none;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--accent-color);
+            animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .treatment-card.active .treatment-details {
+            display: block;
+        }
+        
+        .treatment-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid var(--accent-color);
+            transition: all 0.3s ease;
+        }
+
+        .treatment-card:hover .treatment-image {
+            transform: scale(1.02);
+        }
+
+        .treatment-steps {
+            margin-top: 1rem;
+            padding-left: 1.5rem;
+            list-style-type: none;
+        }
+
+        .treatment-steps li {
+            margin-bottom: 0.8rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .treatment-steps li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+        }
+
+        .treatment-caution {
+            background: var(--caution-bg);
+            padding: 1.2rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            border: 1px solid var(--caution-border);
+            position: relative;
+        }
+
+        .treatment-caution h4 {
+            color: var(--caution-text);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .treatment-caution h4::before {
+            content: '⚠️';
+        }
+
+        .treatment-caution p {
+            color: var(--caution-text);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        footer {
+            background: var(--primary-color);
+            color: var(--white);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding-top: 60px;
+            }
+
+            header {
+                height: 60px;
+            }
+
+            nav {
+                padding: 0 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .treatment-content {
+                padding: 1rem;
+            }
+
+            .treatment-section {
+                padding: 1.5rem;
+            }
+
+            .treatment-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .treatment-image {
+                height: 180px;
+            }
+        }
+
+        .treatment-video {
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 比例 */
+            position: relative;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid var(--accent-color);
+            background: #000;
+            overflow: hidden;
+        }
+
+        .treatment-video video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+
+        .play-button {
+            width: 70px;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .play-button i {
+            color: var(--primary-color);
+            font-size: 28px;
+            margin-left: 5px;
+        }
+
+        .video-overlay:hover .play-button {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .video-controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .video-controls * {
+            pointer-events: auto;
+        }
+
+        .treatment-video:hover .video-controls,
+        .treatment-video:focus-within .video-controls {
+            opacity: 1;
+        }
+
+        .video-controls button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 5px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .video-controls button:focus {
+            outline: 2px solid var(--accent-color);
+            border-radius: 4px;
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            position: relative;
+        }
+
+        .volume-slider {
+            width: 80px;
+            height: 4px;
+            -webkit-appearance: none;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+
+        .volume-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            cursor: pointer;
+            position: relative;
+            margin: 0 10px;
+        }
+
+        .progress {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            background: var(--accent-color);
+            border-radius: 2px;
+            transition: width 0.1s linear;
+        }
+
+        .progress-bar:hover .progress::after {
+            content: '';
+            position: absolute;
+            right: -4px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            background: var(--accent-color);
+            border-radius: 50%;
+        }
+
+        .time-display {
+            color: white;
+            font-size: 14px;
+            min-width: 100px;
+            text-align: center;
+            user-select: none;
+        }
+
+        .fullscreen-btn {
+            margin-left: auto;
+        }
+
+        @media (max-width: 768px) {
+            .video-controls {
+                padding: 5px;
+                background: rgba(0, 0, 0, 0.8);
+            }
+
+            .volume-control {
+                display: none;
+            }
+
+            .time-display {
+                min-width: 80px;
+                font-size: 12px;
+            }
+
+            .progress-bar {
+                margin: 0 5px;
+            }
+        }
+
+        /* 全屏模式样式 */
+        .treatment-video:fullscreen {
+            width: 100vw;
+            height: 100vh;
+            padding-top: 0;
+        }
+
+        .treatment-video:fullscreen video {
+            object-fit: contain;
+        }
+
+        .treatment-video:fullscreen .video-controls {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">中医文化</div>
+            <ul class="nav-links">
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="theory.html">中医理论</a></li>
+                <li><a href="herbs.html">中药知识</a></li>
+                <li><a href="treatment.html">治疗方法</a></li>
+                <li><a href="famous-doctors.html">名医风采</a></li>
+                <li><a href="quiz.html">体质测试</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="treatment-content">
+        <section class="treatment-section">
+            <h2>针灸疗法</h2>
+            <div class="treatment-grid">
+                <div class="treatment-card">
+                    <div class="treatment-video">
+                        <video src="../../视频内容/针灸.MOV" poster="../images/treatment/acupuncture.jpg">
+                            您的浏览器不支持视频播放。
+                        </video>
+                        <div class="video-overlay">
+                            <div class="play-button">
+                                <i class="fas fa-play"></i>
+                            </div>
+                        </div>
+                        <div class="video-controls">
+                            <button class="play-pause-btn"><i class="fas fa-play"></i></button>
+                            <div class="volume-control">
+                                <button class="volume-btn"><i class="fas fa-volume-up"></i></button>
+                                <input type="range" class="volume-slider" min="0" max="100" value="100">
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress"></div>
+                            </div>
+                            <div class="time-display">0:00 / 0:00</div>
+                            <button class="fullscreen-btn"><i class="fas fa-expand"></i></button>
+                        </div>
+                    </div>
+                    <h3>传统针灸</h3>
+                    <p>通过刺激穴位来调节气血，平衡阴阳</p>
+                    <div class="treatment-details">
+                        <h4>适应症：</h4>
+                        <ul class="treatment-steps">
+                            <li>疼痛性疾病</li>
+                            <li>神经系统疾病</li>
+                            <li>消化系统疾病</li>
+                            <li>呼吸系统疾病</li>
+                        </ul>
+                        <h4>常用穴位：</h4>
+                        <ul class="treatment-steps">
+                            <li>合谷穴：位于手背第一、二掌骨间</li>
+                            <li>足三里：位于小腿外侧，犊鼻下3寸</li>
+                            <li>内关穴：位于前臂掌侧，腕横纹上2寸</li>
+                        </ul>
+                        <div class="treatment-caution">
+                            <h4>注意事项：</h4>
+                            <p>空腹、疲劳、醉酒时不宜针灸；孕妇慎用；有出血倾向者禁用</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="treatment-card">
+                    <div class="treatment-video">
+                        <video src="../../视频内容/电针.MOV" poster="../images/treatment/electro-acupuncture.jpg">
+                            您的浏览器不支持视频播放。
+                        </video>
+                        <div class="video-overlay">
+                            <div class="play-button">
+                                <i class="fas fa-play"></i>
+                            </div>
+                        </div>
+                        <div class="video-controls">
+                            <button class="play-pause-btn"><i class="fas fa-play"></i></button>
+                            <div class="volume-control">
+                                <button class="volume-btn"><i class="fas fa-volume-up"></i></button>
+                                <input type="range" class="volume-slider" min="0" max="100" value="100">
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress"></div>
+                            </div>
+                            <div class="time-display">0:00 / 0:00</div>
+                            <button class="fullscreen-btn"><i class="fas fa-expand"></i></button>
+                        </div>
+                    </div>
+                    <h3>电针疗法</h3>
+                    <p>结合现代科技，增强针灸效果</p>
+                    <div class="treatment-details">
+                        <h4>特点：</h4>
+                        <ul class="treatment-steps">
+                            <li>持续刺激</li>
+                            <li>强度可调</li>
+                            <li>效果持久</li>
+                        </ul>
+                        <h4>适应症：</h4>
+                        <ul class="treatment-steps">
+                            <li>慢性疼痛</li>
+                            <li>肌肉萎缩</li>
+                            <li>神经麻痹</li>
+                        </ul>
+                        <div class="treatment-caution">
+                            <h4>注意事项：</h4>
+                            <p>心脏病患者慎用；强度应循序渐进；避免过度刺激</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="treatment-section">
+            <h2>推拿按摩</h2>
+            <div class="treatment-grid">
+                <div class="treatment-card">
+                    <div class="treatment-video">
+                        <video src="../../视频内容/推拿.MOV" poster="../images/treatment/massage.jpg">
+                            您的浏览器不支持视频播放。
+                        </video>
+                        <div class="video-overlay">
+                            <div class="play-button">
+                                <i class="fas fa-play"></i>
+                            </div>
+                        </div>
+                        <div class="video-controls">
+                            <button class="play-pause-btn"><i class="fas fa-play"></i></button>
+                            <div class="volume-control">
+                                <button class="volume-btn"><i class="fas fa-volume-up"></i></button>
+                                <input type="range" class="volume-slider" min="0" max="100" value="100">
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress"></div>
+                            </div>
+                            <div class="time-display">0:00 / 0:00</div>
+                            <button class="fullscreen-btn"><i class="fas fa-expand"></i></button>
+                        </div>
+                    </div>
+                    <h3>传统推拿</h3>
+                    <p>通过手法按摩疏通经络，调理气血</p>
+                    <div class="treatment-details">
+                        <h4>主要手法：</h4>
+                        <ul class="treatment-steps">
+                            <li>推法：用掌根或拇指推按</li>
+                            <li>拿法：用拇指和其余四指相对用力</li>
+                            <li>按法：用指腹或掌根按压</li>
+                            <li>揉法：用掌根或指腹做环形运动</li>
+                        </ul>
+                        <h4>适应症：</h4>
+                        <ul class="treatment-steps">
+                            <li>颈肩腰腿痛</li>
+                            <li>消化系统疾病</li>
+                            <li>神经系统疾病</li>
+                        </ul>
+                        <div class="treatment-caution">
+                            <h4>注意事项：</h4>
+                            <p>皮肤破损、骨折、肿瘤部位禁用；力度要适中；饭后1小时内不宜推拿</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="treatment-card">
+                    <div class="treatment-video">
+                        <video src="../../视频内容/小儿推拿.MOV" poster="../images/treatment/tuina.jpg">
+                            您的浏览器不支持视频播放。
+                        </video>
+                        <div class="video-overlay">
+                            <div class="play-button">
+                                <i class="fas fa-play"></i>
+                            </div>
+                        </div>
+                        <div class="video-controls">
+                            <button class="play-pause-btn"><i class="fas fa-play"></i></button>
+                            <div class="volume-control">
+                                <button class="volume-btn"><i class="fas fa-volume-up"></i></button>
+                                <input type="range" class="volume-slider" min="0" max="100" value="100">
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress"></div>
+                            </div>
+                            <div class="time-display">0:00 / 0:00</div>
+                            <button class="fullscreen-btn"><i class="fas fa-expand"></i></button>
+                        </div>
+                    </div>
+                    <h3>小儿推拿</h3>
+                    <p>专门针对儿童的推拿手法</p>
+                    <div class="treatment-details">
+                        <h4>适应症：</h4>
+                        <ul class="treatment-steps">
+                            <li>小儿发热</li>
+                            <li>消化不良</li>
+                            <li>咳嗽</li>
+                            <li>夜啼</li>
+                        </ul>
+                        <h4>常用手法：</h4>
+                        <ul class="treatment-steps">
+                            <li>推法：轻推轻按</li>
+                            <li>揉法：轻柔环形运动</li>
+                            <li>捏法：轻捏轻提</li>
+                        </ul>
+                        <div class="treatment-caution">
+                            <h4>注意事项：</h4>
+                            <p>手法要轻柔；时间不宜过长；注意观察孩子反应</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="treatment-section">
+            <h2>艾灸疗法</h2>
+            <div class="treatment-grid">
+                <div class="treatment-card">
+                    <div class="treatment-video">
+                        <video src="../../视频内容/艾灸.MOV" poster="../images/treatment/moxibustion.jpg">
+                            您的浏览器不支持视频播放。
+                        </video>
+                        <div class="video-overlay">
+                            <div class="play-button">
+                                <i class="fas fa-play"></i>
+                            </div>
+                        </div>
+                        <div class="video-controls">
+                            <button class="play-pause-btn"><i class="fas fa-play"></i></button>
+                            <div class="volume-control">
+                                <button class="volume-btn"><i class="fas fa-volume-up"></i></button>
+                                <input type="range" class="volume-slider" min="0" max="100" value="100">
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress"></div>
+                            </div>
+                            <div class="time-display">0:00 / 0:00</div>
+                            <button class="fullscreen-btn"><i class="fas fa-expand"></i></button>
+                        </div>
+                    </div>
+                    <h3>传统艾灸</h3>
+                    <p>利用艾草燃烧产生的热力刺激穴位</p>
+                    <div class="treatment-details">
+                        <h4>功效：</h4>
+                        <ul class="treatment-steps">
+                            <li>温经通络</li>
+                            <li>祛寒除湿</li>
+                            <li>补气养血</li>
+                            <li>调节免疫</li>
+                        </ul>
+                        <h4>常用穴位：</h4>
+                        <ul class="treatment-steps">
+                            <li>关元穴：位于脐下3寸</li>
+                            <li>气海穴：位于脐下1.5寸</li>
+                            <li>足三里：位于小腿外侧，犊鼻下3寸</li>
+                        </ul>
+                        <div class="treatment-caution">
+                            <h4>注意事项：</h4>
+                            <p>避免烫伤；注意通风；孕妇慎用；有出血倾向者禁用</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="treatment-card">
+                    <div class="treatment-video">
+                        <video src="../../视频内容/隔物灸.MOV" poster="../images/treatment/indirect-moxibustion.jpg">
+                            您的浏览器不支持视频播放。
+                        </video>
+                        <div class="video-overlay">
+                            <div class="play-button">
+                                <i class="fas fa-play"></i>
+                            </div>
+                        </div>
+                        <div class="video-controls">
+                            <button class="play-pause-btn"><i class="fas fa-play"></i></button>
+                            <div class="volume-control">
+                                <button class="volume-btn"><i class="fas fa-volume-up"></i></button>
+                                <input type="range" class="volume-slider" min="0" max="100" value="100">
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress"></div>
+                            </div>
+                            <div class="time-display">0:00 / 0:00</div>
+                            <button class="fullscreen-btn"><i class="fas fa-expand"></i></button>
+                        </div>
+                    </div>
+                    <h3>隔物灸</h3>
+                    <p>通过隔物进行艾灸，减少直接刺激</p>
+                    <div class="treatment-details">
+                        <h4>常用隔物：</h4>
+                        <ul class="treatment-steps">
+                            <li>姜片：温中散寒</li>
+                            <li>蒜片：杀菌消炎</li>
+                            <li>盐：温肾固精</li>
+                        </ul>
+                        <h4>适应症：</h4>
+                        <ul class="treatment-steps">
+                            <li>寒性病症</li>
+                            <li>虚寒体质</li>
+                            <li>慢性疾病</li>
+                        </ul>
+                        <div class="treatment-caution">
+                            <h4>注意事项：</h4>
+                            <p>隔物要新鲜；注意观察皮肤反应；避免过度刺激</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="treatment-section">
+            <h2>拔罐疗法</h2>
+            <div class="treatment-grid">
+                <div class="treatment-card">
+                    <div class="treatment-video">
+                        <video src="../../视频内容/拔罐.mov" poster="../images/treatment/cupping.jpg">
+                            您的浏览器不支持视频播放。
+                        </video>
+                        <div class="video-overlay">
+                            <div class="play-button">
+                                <i class="fas fa-play"></i>
+                            </div>
+                        </div>
+                        <div class="video-controls">
+                            <button class="play-pause-btn"><i class="fas fa-play"></i></button>
+                            <div class="volume-control">
+                                <button class="volume-btn"><i class="fas fa-volume-up"></i></button>
+                                <input type="range" class="volume-slider" min="0" max="100" value="100">
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress"></div>
+                            </div>
+                            <div class="time-display">0:00 / 0:00</div>
+                            <button class="fullscreen-btn"><i class="fas fa-expand"></i></button>
+                        </div>
+                    </div>
+                    <h3>传统拔罐</h3>
+                    <p>通过负压作用，促进气血运行</p>
+                    <div class="treatment-details">
+                        <h4>功效：</h4>
+                        <ul class="treatment-steps">
+                            <li>疏通经络</li>
+                            <li>祛风散寒</li>
+                            <li>活血化瘀</li>
+                            <li>调节免疫</li>
+                        </ul>
+                        <h4>适应症：</h4>
+                        <ul class="treatment-steps">
+                            <li>肌肉酸痛</li>
+                            <li>风寒感冒</li>
+                            <li>关节疼痛</li>
+                        </ul>
+                        <div class="treatment-caution">
+                            <h4>注意事项：</h4>
+                            <p>皮肤破损处禁用；时间不宜过长；注意保暖</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2024 中医文化知识库 - 传承千年智慧</p>
+    </footer>
+
+    <script>
+        document.querySelectorAll('.treatment-card').forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.toggle('active');
+            });
+        });
+
+        // 视频播放控制
+        document.querySelectorAll('.treatment-video').forEach(videoContainer => {
+            const video = videoContainer.querySelector('video');
+            const overlay = videoContainer.querySelector('.video-overlay');
+            const controls = videoContainer.querySelector('.video-controls');
+            const playPauseBtn = controls.querySelector('.play-pause-btn');
+            const volumeBtn = controls.querySelector('.volume-btn');
+            const volumeSlider = controls.querySelector('.volume-slider');
+            const progressBar = controls.querySelector('.progress-bar');
+            const progress = controls.querySelector('.progress');
+            const timeDisplay = controls.querySelector('.time-display');
+            const fullscreenBtn = controls.querySelector('.fullscreen-btn');
+            const centerPlayButton = overlay.querySelector('.play-button');
+
+            let controlsTimeout;
+            let isDragging = false;
+
+            // 显示控制栏
+            const showControls = () => {
+                controls.style.opacity = '1';
+                clearTimeout(controlsTimeout);
+                controlsTimeout = setTimeout(() => {
+                    if (!video.paused && !isDragging) {
+                        controls.style.opacity = '0';
+                    }
+                }, 3000);
+            };
+
+            // 播放/暂停
+            const togglePlay = (e) => {
+                if (e) e.stopPropagation();
+                if (video.paused) {
+                    video.play().catch(error => {
+                        console.error('播放失败:', error);
+                    });
+                    playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                    overlay.style.display = 'none';
+                } else {
+                    video.pause();
+                    playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                }
+            };
+
+            // 中心播放按钮点击事件
+            centerPlayButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                togglePlay();
+            });
+
+            playPauseBtn.addEventListener('click', togglePlay);
+
+            // 音量控制
+            volumeBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                video.muted = !video.muted;
+                volumeBtn.innerHTML = video.muted ? 
+                    '<i class="fas fa-volume-mute"></i>' : 
+                    '<i class="fas fa-volume-up"></i>';
+                volumeSlider.value = video.muted ? 0 : video.volume * 100;
+            });
+
+            volumeSlider.addEventListener('input', (e) => {
+                e.stopPropagation();
+                const volume = e.target.value / 100;
+                video.volume = volume;
+                video.muted = volume === 0;
+                volumeBtn.innerHTML = volume === 0 ? 
+                    '<i class="fas fa-volume-mute"></i>' : 
+                    '<i class="fas fa-volume-up"></i>';
+            });
+
+            // 进度条控制
+            const updateProgress = (e) => {
+                if (!isDragging) return;
+                const rect = progressBar.getBoundingClientRect();
+                const pos = (e.clientX - rect.left) / rect.width;
+                video.currentTime = pos * video.duration;
+            };
+
+            progressBar.addEventListener('mousedown', (e) => {
+                e.stopPropagation();
+                isDragging = true;
+                updateProgress(e);
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    updateProgress(e);
+                }
+            });
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+
+            // 更新进度条
+            video.addEventListener('timeupdate', () => {
+                if (!isDragging) {
+                    const percent = (video.currentTime / video.duration) * 100;
+                    progress.style.width = `${percent}%`;
+                }
+                
+                // 更新时间显示
+                const currentMinutes = Math.floor(video.currentTime / 60);
+                const currentSeconds = Math.floor(video.currentTime % 60);
+                const durationMinutes = Math.floor(video.duration / 60);
+                const durationSeconds = Math.floor(video.duration % 60);
+                
+                timeDisplay.textContent = `${currentMinutes}:${currentSeconds.toString().padStart(2, '0')} / ${durationMinutes}:${durationSeconds.toString().padStart(2, '0')}`;
+            });
+
+            // 全屏控制
+            const toggleFullscreen = (e) => {
+                e.stopPropagation();
+                if (!document.fullscreenElement) {
+                    videoContainer.requestFullscreen().catch(error => {
+                        console.error('全屏失败:', error);
+                    });
+                    fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
+                } else {
+                    document.exitFullscreen();
+                    fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+                }
+            };
+
+            fullscreenBtn.addEventListener('click', toggleFullscreen);
+
+            // 监听全屏变化
+            document.addEventListener('fullscreenchange', () => {
+                fullscreenBtn.innerHTML = document.fullscreenElement ? 
+                    '<i class="fas fa-compress"></i>' : 
+                    '<i class="fas fa-expand"></i>';
+            });
+
+            // 视频事件监听
+            video.addEventListener('play', () => {
+                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                overlay.style.display = 'none';
+            });
+
+            video.addEventListener('pause', () => {
+                playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+            });
+
+            video.addEventListener('ended', () => {
+                playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                overlay.style.display = 'flex';
+                video.currentTime = 0;
+            });
+
+            // 鼠标移动显示控制栏
+            videoContainer.addEventListener('mousemove', showControls);
+            videoContainer.addEventListener('mouseleave', () => {
+                if (!video.paused && !isDragging) {
+                    controls.style.opacity = '0';
+                }
+            });
+
+            // 点击视频区域播放/暂停
+            videoContainer.addEventListener('click', (e) => {
+                if (e.target === videoContainer || e.target === overlay) {
+                    togglePlay();
+                }
+            });
+
+            // 键盘控制
+            document.addEventListener('keydown', (e) => {
+                if (document.activeElement === videoContainer || videoContainer.contains(document.activeElement)) {
+                    switch(e.key.toLowerCase()) {
+                        case ' ':
+                        case 'k':
+                            e.preventDefault();
+                            togglePlay();
+                            break;
+                        case 'f':
+                            e.preventDefault();
+                            toggleFullscreen();
+                            break;
+                        case 'm':
+                            e.preventDefault();
+                            video.muted = !video.muted;
+                            break;
+                        case 'arrowleft':
+                            e.preventDefault();
+                            video.currentTime = Math.max(0, video.currentTime - 5);
+                            break;
+                        case 'arrowright':
+                            e.preventDefault();
+                            video.currentTime = Math.min(video.duration, video.currentTime + 5);
+                            break;
+                    }
+                }
+            });
+        });
+    </script>
+    <script src="../js/main.js"></script>
+    <script src="../js/ai-chat.js"></script>
+</body>
+</html> 

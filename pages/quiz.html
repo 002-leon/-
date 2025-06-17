@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中医体质测试 - 中医文化知识库</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/ai-chat.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        .quiz-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #eee;
+            border-radius: 5px;
+            margin: 2rem 0;
+            overflow: hidden;
+        }
+
+        .progress {
+            width: 0%;
+            height: 100%;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .question {
+            display: none;
+            margin-bottom: 2rem;
+        }
+
+        .question.active {
+            display: block;
+        }
+
+        .options {
+            display: grid;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .option {
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option:hover {
+            border-color: var(--primary-color);
+            background: #f8f9fa;
+        }
+
+        .option.selected {
+            border-color: var(--primary-color);
+            background: #f0f7ff;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .result {
+            display: none;
+            text-align: center;
+        }
+
+        .result h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .result-content {
+            text-align: left;
+            margin-top: 2rem;
+        }
+
+        .result-section {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        .result-section h3 {
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+
+        .constitution-type {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #f0f7ff;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">中医文化</div>
+            <ul class="nav-links">
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="theory.html">中医理论</a></li>
+                <li><a href="herbs.html">中药知识</a></li>
+                <li><a href="treatment.html">治疗方法</a></li>
+                <li><a href="famous-doctors.html">名医风采</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="quiz-container">
+        <h1>中医体质测试</h1>
+        <p>请根据您近一年的身体状况，选择最符合的选项。本测试将帮助您了解自己的体质类型。</p>
+        
+        <div class="progress-bar">
+            <div class="progress"></div>
+        </div>
+
+        <div class="questions">
+            <div class="question active" data-question="1">
+                <h3>1. 您的精神状态如何？</h3>
+                <div class="options">
+                    <div class="option" data-score="2">精神萎靡，容易疲劳，说话声音低弱</div>
+                    <div class="option" data-score="1">精神一般，偶有疲劳感</div>
+                    <div class="option" data-score="0">精神饱满，精力充沛</div>
+                </div>
+            </div>
+
+            <div class="question" data-question="2">
+                <h3>2. 您的睡眠情况如何？</h3>
+                <div class="options">
+                    <div class="option" data-score="2">入睡困难，多梦易醒，醒后难以入睡</div>
+                    <div class="option" data-score="1">睡眠质量一般，偶有失眠</div>
+                    <div class="option" data-score="0">睡眠质量好，入睡快，少梦</div>
+                </div>
+            </div>
+
+            <div class="question" data-question="3">
+                <h3>3. 您的食欲和消化情况如何？</h3>
+                <div class="options">
+                    <div class="option" data-score="2">食欲不振，容易腹胀，大便溏薄</div>
+                    <div class="option" data-score="1">食欲一般，偶有消化不良</div>
+                    <div class="option" data-score="0">食欲旺盛，消化良好</div>
+                </div>
+            </div>
+
+            <div class="question" data-question="4">
+                <h3>4. 您的汗出情况如何？</h3>
+                <div class="options">
+                    <div class="option" data-score="2">自汗，动则汗出，汗出后怕冷</div>
+                    <div class="option" data-score="1">正常活动时出汗</div>
+                    <div class="option" data-score="0">少汗，即使剧烈运动也不易出汗</div>
+                </div>
+            </div>
+
+            <div class="question" data-question="5">
+                <h3>5. 您的抵抗力如何？</h3>
+                <div class="options">
+                    <div class="option" data-score="2">易感冒，恢复慢，反复发作</div>
+                    <div class="option" data-score="1">偶有感冒，恢复较快</div>
+                    <div class="option" data-score="0">很少感冒，即使感冒也很快恢复</div>
+                </div>
+            </div>
+
+            <div class="question" data-question="6">
+                <h3>6. 您的寒热感觉如何？</h3>
+                <div class="options">
+                    <div class="option" data-score="2">怕冷，手脚发凉，喜温喜热</div>
+                    <div class="option" data-score="1">寒热感觉适中</div>
+                    <div class="option" data-score="0">怕热，手脚心热，喜凉</div>
+                </div>
+            </div>
+
+            <div class="question" data-question="7">
+                <h3>7. 您的情绪状态如何？</h3>
+                <div class="options">
+                    <div class="option" data-score="2">易怒，烦躁，情绪波动大</div>
+                    <div class="option" data-score="1">情绪基本稳定，偶有波动</div>
+                    <div class="option" data-score="0">情绪稳定，性格开朗</div>
+                </div>
+            </div>
+
+            <div class="question" data-question="8">
+                <h3>8. 您的舌象如何？</h3>
+                <div class="options">
+                    <div class="option" data-score="2">舌淡胖，有齿痕，苔白腻</div>
+                    <div class="option" data-score="1">舌淡红，苔薄白</div>
+                    <div class="option" data-score="0">舌红，苔少或黄</div>
+                </div>
+            </div>
+
+            <div class="question" data-question="9">
+                <h3>9. 您的口渴情况如何？</h3>
+                <div class="options">
+                    <div class="option" data-score="2">口渴喜热饮，饮水量少</div>
+                    <div class="option" data-score="1">口渴程度一般</div>
+                    <div class="option" data-score="0">口渴喜冷饮，饮水量多</div>
+                </div>
+            </div>
+
+            <div class="question" data-question="10">
+                <h3>10. 您的皮肤状况如何？</h3>
+                <div class="options">
+                    <div class="option" data-score="2">皮肤干燥，容易起皮屑</div>
+                    <div class="option" data-score="1">皮肤状态一般</div>
+                    <div class="option" data-score="0">皮肤油腻，容易长痘</div>
+                </div>
+            </div>
+
+            <div class="question" data-question="11">
+                <h3>11. 您的大小便情况如何？</h3>
+                <div class="options">
+                    <div class="option" data-score="2">大便溏薄，小便清长</div>
+                    <div class="option" data-score="1">大小便基本正常</div>
+                    <div class="option" data-score="0">大便干结，小便短黄</div>
+                </div>
+            </div>
+
+            <div class="question" data-question="12">
+                <h3>12. 您的月经情况如何？（女性）</h3>
+                <div class="options">
+                    <div class="option" data-score="2">月经量少，色淡，周期延长</div>
+                    <div class="option" data-score="1">月经基本正常</div>
+                    <div class="option" data-score="0">月经量多，色深，周期缩短</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <button class="btn btn-secondary" id="prevBtn" style="display: none;">上一题</button>
+            <button class="btn btn-primary" id="nextBtn">下一题</button>
+        </div>
+
+        <div class="result">
+            <h2>您的体质测试结果</h2>
+            <div class="constitution-type"></div>
+            <div class="result-content">
+                <div class="result-section">
+                    <h3>体质特征</h3>
+                    <p class="constitution-description"></p>
+                </div>
+                <div class="result-section">
+                    <h3>健康建议</h3>
+                    <p class="health-tips"></p>
+                </div>
+                <div class="result-section">
+                    <h3>饮食建议</h3>
+                    <p class="diet-tips"></p>
+                </div>
+                <div class="result-section">
+                    <h3>运动建议</h3>
+                    <p class="exercise-tips"></p>
+                </div>
+            </div>
+            <button class="btn btn-primary" id="restartBtn">重新测试</button>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2024 中医文化知识库 - 传承千年智慧</p>
+    </footer>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/ai-chat.js"></script>
+    <script>
+        const questions = document.querySelectorAll('.question');
+        const progressBar = document.querySelector('.progress');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const restartBtn = document.getElementById('restartBtn');
+        let currentQuestion = 0;
+        let answers = [];
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
+        function showQuestion(index) {
+            questions.forEach(q => q.classList.remove('active'));
+            questions[index].classList.add('active');
+            
+            prevBtn.style.display = index === 0 ? 'none' : 'block';
+            nextBtn.textContent = index === questions.length - 1 ? '查看结果' : '下一题';
+            
+            updateProgress();
+        }
+
+        function selectOption(option) {
+            const question = option.closest('.question');
+            question.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+            option.classList.add('selected');
+        }
+
+        function saveAnswer() {
+            const question = questions[currentQuestion];
+            const selectedOption = question.querySelector('.option.selected');
+            if (selectedOption) {
+                answers[currentQuestion] = parseInt(selectedOption.dataset.score);
+            }
+        }
+
+        function calculateResult() {
+            const totalScore = answers.reduce((a, b) => a + b, 0);
+            let constitutionType, description, healthTips, dietTips, exerciseTips;
+
+            if (totalScore <= 8) {
+                constitutionType = "平和质";
+                description = "您的体质属于平和质，阴阳平衡，气血充足，是理想的健康状态。";
+                healthTips = "保持现有的生活方式，注意作息规律，保持心情愉悦。";
+                dietTips = "饮食均衡，不偏不倚，注意营养搭配。";
+                exerciseTips = "保持适度运动，可以选择太极拳、散步等温和运动。";
+            } else if (totalScore <= 16) {
+                constitutionType = "气虚质";
+                description = "您的体质属于气虚质，容易疲劳，抵抗力较弱。";
+                healthTips = "注意休息，避免过度劳累，保持充足睡眠。";
+                dietTips = "多食用补气食物，如人参、黄芪、大枣等。";
+                exerciseTips = "选择温和的运动，如太极拳、八段锦等。";
+            } else if (totalScore <= 24) {
+                constitutionType = "阳虚质";
+                description = "您的体质属于阳虚质，怕冷，手脚发凉。";
+                healthTips = "注意保暖，避免受寒，保持室内温度适宜。";
+                dietTips = "多食用温补食物，如羊肉、生姜、桂圆等。";
+                exerciseTips = "选择温和的运动，避免剧烈运动。";
+            } else {
+                constitutionType = "阴虚质";
+                description = "您的体质属于阴虚质，容易口干，怕热。";
+                healthTips = "注意补充水分，避免熬夜，保持心情舒畅。";
+                dietTips = "多食用滋阴食物，如银耳、百合、梨等。";
+                exerciseTips = "选择温和的运动，避免过度出汗。";
+            }
+
+            document.querySelector('.constitution-type').textContent = constitutionType;
+            document.querySelector('.constitution-description').textContent = description;
+            document.querySelector('.health-tips').textContent = healthTips;
+            document.querySelector('.diet-tips').textContent = dietTips;
+            document.querySelector('.exercise-tips').textContent = exerciseTips;
+        }
+
+        questions.forEach(question => {
+            question.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', () => selectOption(option));
+            });
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentQuestion > 0) {
+                saveAnswer();
+                currentQuestion--;
+                showQuestion(currentQuestion);
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            saveAnswer();
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+            } else {
+                calculateResult();
+                document.querySelector('.questions').style.display = 'none';
+                document.querySelector('.buttons').style.display = 'none';
+                document.querySelector('.result').style.display = 'block';
+            }
+        });
+
+        restartBtn.addEventListener('click', () => {
+            currentQuestion = 0;
+            answers = [];
+            document.querySelector('.questions').style.display = 'block';
+            document.querySelector('.buttons').style.display = 'flex';
+            document.querySelector('.result').style.display = 'none';
+            questions.forEach(q => {
+                q.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+            });
+            showQuestion(0);
+        });
+
+        showQuestion(0);
+    </script>
+</body>
+</html> 

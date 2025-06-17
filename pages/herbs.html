@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中药知识 - 中医文化知识库</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/ai-chat.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #8B4513;
+            --secondary-color: #D2691E;
+            --accent-color: #CD853F;
+            --text-color: #4A4A4A;
+            --light-bg: #FDF5E6;
+            --white: #FFFFFF;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: var(--light-bg);
+            min-height: 100vh;
+            padding-top: 80px; /* 为固定定位的header留出空间 */
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            border-bottom: 2px solid var(--primary-color);
+            height: 80px;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .herbs-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .search-bar {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            border: 1px solid var(--accent-color);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .search-input {
+            width: 100%;
+            max-width: 500px;
+            padding: 1rem;
+            border: 2px solid var(--accent-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.1);
+        }
+        
+        .herbs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .herb-card {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border: 1px solid var(--accent-color);
+            cursor: pointer;
+        }
+        
+        .herb-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .herb-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--accent-color);
+        }
+        
+        .herb-info {
+            padding: 1.5rem;
+        }
+        
+        .herb-info h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+        
+        .herb-properties {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--accent-color);
+        }
+        
+        .herb-category {
+            margin-bottom: 3rem;
+        }
+
+        .herb-category h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-color);
+            font-size: 1.8rem;
+        }
+
+        .herb-details {
+            display: none;
+            margin-top: 1rem;
+            padding: 1.5rem;
+            background: var(--light-bg);
+            border-radius: 8px;
+            border: 1px solid var(--accent-color);
+        }
+
+        .herb-card.active .herb-details {
+            display: block;
+        }
+
+        .herb-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .herb-tag {
+            padding: 0.3rem 0.8rem;
+            background: var(--primary-color);
+            color: var(--white);
+            border-radius: 15px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .herb-tag:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        footer {
+            background: var(--primary-color);
+            color: var(--white);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding-top: 60px;
+            }
+
+            header {
+                height: 60px;
+            }
+
+            nav {
+                padding: 0 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .herbs-content {
+                padding: 1rem;
+            }
+
+            .search-bar {
+                padding: 1.5rem;
+            }
+
+            .search-input {
+                padding: 0.8rem;
+            }
+
+            .herbs-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">中医文化</div>
+            <ul class="nav-links">
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="theory.html">中医理论</a></li>
+                <li><a href="herbs.html">中药知识</a></li>
+                <li><a href="treatment.html">治疗方法</a></li>
+                <li><a href="famous-doctors.html">名医风采</a></li>
+                <li><a href="quiz.html">体质测试</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="herbs-content">
+        <div class="search-bar">
+            <input type="text" class="search-input" placeholder="搜索中药..." id="herbSearch">
+        </div>
+
+        <div class="herb-category">
+            <h2>补气类</h2>
+            <div class="herbs-grid">
+                <div class="herb-card">
+                    <img src="../../媒体内容/中药知识/人参.jpg" alt="人参" class="herb-image">
+                    <div class="herb-info">
+                        <h3>人参</h3>
+                        <p>性味：甘、微苦，微温</p>
+                        <div class="herb-properties">
+                            <p>功效：大补元气，复脉固脱，补脾益肺，生津，安神</p>
+                            <p>主治：体虚欲脱，肢冷脉微，脾虚食少，肺虚喘咳，津伤口渴</p>
+                        </div>
+                        <div class="herb-details">
+                            <h4>使用注意：</h4>
+                            <p>阴虚火旺者慎用，不宜与藜芦同用</p>
+                            <h4>炮制方法：</h4>
+                            <p>生晒参、红参、白参等</p>
+                            <div class="herb-tags">
+                                <span class="herb-tag">补气</span>
+                                <span class="herb-tag">生津</span>
+                                <span class="herb-tag">安神</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="herb-card">
+                    <img src="../../媒体内容/中药知识/黄芪.jpg" alt="黄芪" class="herb-image">
+                    <div class="herb-info">
+                        <h3>黄芪</h3>
+                        <p>性味：甘，微温</p>
+                        <div class="herb-properties">
+                            <p>功效：补气固表，利水消肿，托毒排脓，生肌</p>
+                            <p>主治：气虚乏力，食少便溏，中气下陷，久泻脱肛</p>
+                        </div>
+                        <div class="herb-details">
+                            <h4>使用注意：</h4>
+                            <p>表实邪盛者慎用</p>
+                            <h4>炮制方法：</h4>
+                            <p>生黄芪、炙黄芪</p>
+                            <div class="herb-tags">
+                                <span class="herb-tag">补气</span>
+                                <span class="herb-tag">固表</span>
+                                <span class="herb-tag">利水</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="herb-category">
+            <h2>补血类</h2>
+            <div class="herbs-grid">
+                <div class="herb-card">
+                    <img src="../../媒体内容/中药知识/当归.jpg" alt="当归" class="herb-image">
+                    <div class="herb-info">
+                        <h3>当归</h3>
+                        <p>性味：甘、辛，温</p>
+                        <div class="herb-properties">
+                            <p>功效：补血活血，调经止痛，润肠通便</p>
+                            <p>主治：血虚萎黄，月经不调，经闭痛经，虚寒腹痛</p>
+                        </div>
+                        <div class="herb-details">
+                            <h4>使用注意：</h4>
+                            <p>阴虚火旺者慎用</p>
+                            <h4>炮制方法：</h4>
+                            <p>生当归、酒当归</p>
+                            <div class="herb-tags">
+                                <span class="herb-tag">补血</span>
+                                <span class="herb-tag">活血</span>
+                                <span class="herb-tag">调经</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="herb-card">
+                    <img src="../../媒体内容/中药知识/熟地黄.jpg" alt="熟地黄" class="herb-image">
+                    <div class="herb-info">
+                        <h3>熟地黄</h3>
+                        <p>性味：甘，微温</p>
+                        <div class="herb-properties">
+                            <p>功效：补血滋阴，益精填髓</p>
+                            <p>主治：血虚萎黄，月经不调，腰膝酸软，耳鸣耳聋</p>
+                        </div>
+                        <div class="herb-details">
+                            <h4>使用注意：</h4>
+                            <p>脾虚湿盛者慎用</p>
+                            <h4>炮制方法：</h4>
+                            <p>生地黄、熟地黄</p>
+                            <div class="herb-tags">
+                                <span class="herb-tag">补血</span>
+                                <span class="herb-tag">滋阴</span>
+                                <span class="herb-tag">益精</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="herb-category">
+            <h2>清热类</h2>
+            <div class="herbs-grid">
+                <div class="herb-card">
+                    <img src="../../媒体内容/中药知识/黄连.jpg" alt="黄连" class="herb-image">
+                    <div class="herb-info">
+                        <h3>黄连</h3>
+                        <p>性味：苦，寒</p>
+                        <div class="herb-properties">
+                            <p>功效：清热燥湿，泻火解毒</p>
+                            <p>主治：湿热痞满，呕吐，泻痢，黄疸，高热神昏</p>
+                        </div>
+                        <div class="herb-details">
+                            <h4>使用注意：</h4>
+                            <p>脾胃虚寒者慎用</p>
+                            <h4>炮制方法：</h4>
+                            <p>生黄连、酒黄连</p>
+                            <div class="herb-tags">
+                                <span class="herb-tag">清热</span>
+                                <span class="herb-tag">燥湿</span>
+                                <span class="herb-tag">解毒</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="herb-card">
+                    <img src="../../媒体内容/中药知识/栀子.jpg" alt="栀子" class="herb-image">
+                    <div class="herb-info">
+                        <h3>栀子</h3>
+                        <p>性味：苦，寒</p>
+                        <div class="herb-properties">
+                            <p>功效：泻火除烦，清热利湿，凉血解毒</p>
+                            <p>主治：热病心烦，湿热黄疸，血热吐衄</p>
+                        </div>
+                        <div class="herb-details">
+                            <h4>使用注意：</h4>
+                            <p>脾胃虚寒者慎用</p>
+                            <h4>炮制方法：</h4>
+                            <p>生栀子、炒栀子</p>
+                            <div class="herb-tags">
+                                <span class="herb-tag">清热</span>
+                                <span class="herb-tag">利湿</span>
+                                <span class="herb-tag">凉血</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="herb-category">
+            <h2>补阴类</h2>
+            <div class="herbs-grid">
+                <div class="herb-card">
+                    <img src="../../媒体内容/中药知识/麦冬.jpeg" alt="麦冬" class="herb-image">
+                    <div class="herb-info">
+                        <h3>麦冬</h3>
+                        <p>性味：甘、微苦，微寒</p>
+                        <div class="herb-properties">
+                            <p>功效：养阴生津，润肺清心</p>
+                            <p>主治：肺燥干咳，虚劳咳嗽，津伤口渴，心烦失眠</p>
+                        </div>
+                        <div class="herb-details">
+                            <h4>使用注意：</h4>
+                            <p>脾胃虚寒者慎用</p>
+                            <h4>炮制方法：</h4>
+                            <p>生麦冬、蜜麦冬</p>
+                            <div class="herb-tags">
+                                <span class="herb-tag">养阴</span>
+                                <span class="herb-tag">生津</span>
+                                <span class="herb-tag">润肺</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="herb-card">
+                    <img src="../../媒体内容/中药知识/北沙参.jpg" alt="北沙参" class="herb-image">
+                    <div class="herb-info">
+                        <h3>北沙参</h3>
+                        <p>性味：甘、微苦，微寒</p>
+                        <div class="herb-properties">
+                            <p>功效：养阴清肺，益胃生津</p>
+                            <p>主治：肺热燥咳，劳嗽痰血，热病津伤口渴</p>
+                        </div>
+                        <div class="herb-details">
+                            <h4>使用注意：</h4>
+                            <p>脾胃虚寒者慎用</p>
+                            <h4>炮制方法：</h4>
+                            <p>生沙参、蜜沙参</p>
+                            <div class="herb-tags">
+                                <span class="herb-tag">养阴</span>
+                                <span class="herb-tag">清肺</span>
+                                <span class="herb-tag">生津</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="herb-category">
+            <h2>补阳类</h2>
+            <div class="herbs-grid">
+                <div class="herb-card">
+                    <img src="../../媒体内容/中药知识/肉苁蓉.png" alt="肉苁蓉" class="herb-image">
+                    <div class="herb-info">
+                        <h3>肉苁蓉</h3>
+                        <p>性味：甘、咸，温</p>
+                        <div class="herb-properties">
+                            <p>功效：补肾阳，益精血，润肠通便</p>
+                            <p>主治：肾阳不足，精血亏虚，阳痿早泄，腰膝酸软</p>
+                        </div>
+                        <div class="herb-details">
+                            <h4>使用注意：</h4>
+                            <p>阴虚火旺者慎用</p>
+                            <h4>炮制方法：</h4>
+                            <p>生肉苁蓉、酒肉苁蓉</p>
+                            <div class="herb-tags">
+                                <span class="herb-tag">补肾</span>
+                                <span class="herb-tag">益精</span>
+                                <span class="herb-tag">润肠</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="herb-card">
+                    <img src="../../媒体内容/中药知识/淫羊藿.jpeg" alt="淫羊藿" class="herb-image">
+                    <div class="herb-info">
+                        <h3>淫羊藿</h3>
+                        <p>性味：辛、甘，温</p>
+                        <div class="herb-properties">
+                            <p>功效：补肾阳，强筋骨，祛风湿</p>
+                            <p>主治：肾阳不足，阳痿遗精，腰膝酸软，风湿痹痛</p>
+                        </div>
+                        <div class="herb-details">
+                            <h4>使用注意：</h4>
+                            <p>阴虚火旺者慎用</p>
+                            <h4>炮制方法：</h4>
+                            <p>生淫羊藿、炙淫羊藿</p>
+                            <div class="herb-tags">
+                                <span class="herb-tag">补肾</span>
+                                <span class="herb-tag">强筋</span>
+                                <span class="herb-tag">祛风</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="herb-category">
+            <h2>活血化瘀类</h2>
+            <div class="herbs-grid">
+                <div class="herb-card">
+                    <img src="../../媒体内容/中药知识/丹参.png" alt="丹参" class="herb-image">
+                    <div class="herb-info">
+                        <h3>丹参</h3>
+                        <p>性味：苦，微寒</p>
+                        <div class="herb-properties">
+                            <p>功效：活血祛瘀，通经止痛，清心除烦</p>
+                            <p>主治：胸痹心痛，月经不调，痛经，疮疡肿痛</p>
+                        </div>
+                        <div class="herb-details">
+                            <h4>使用注意：</h4>
+                            <p>孕妇慎用</p>
+                            <h4>炮制方法：</h4>
+                            <p>生丹参、酒丹参</p>
+                            <div class="herb-tags">
+                                <span class="herb-tag">活血</span>
+                                <span class="herb-tag">祛瘀</span>
+                                <span class="herb-tag">通经</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="herb-card">
+                    <img src="../../媒体内容/中药知识/赤芍.jpeg" alt="赤芍" class="herb-image">
+                    <div class="herb-info">
+                        <h3>赤芍</h3>
+                        <p>性味：苦，微寒</p>
+                        <div class="herb-properties">
+                            <p>功效：清热凉血，活血祛瘀</p>
+                            <p>主治：热入营血，吐血衄血，月经不调，痛经</p>
+                        </div>
+                        <div class="herb-details">
+                            <h4>使用注意：</h4>
+                            <p>孕妇慎用</p>
+                            <h4>炮制方法：</h4>
+                            <p>生赤芍、炒赤芍</p>
+                            <div class="herb-tags">
+                                <span class="herb-tag">清热</span>
+                                <span class="herb-tag">凉血</span>
+                                <span class="herb-tag">活血</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="herb-category">
+            <h2>祛风湿类</h2>
+            <div class="herbs-grid">
+                <div class="herb-card">
+                    <img src="../../媒体内容/中药知识/秦艽.jpg" alt="秦艽" class="herb-image">
+                    <div class="herb-info">
+                        <h3>秦艽</h3>
+                        <p>性味：苦、辛，平</p>
+                        <div class="herb-properties">
+                            <p>功效：祛风湿，清湿热，止痹痛</p>
+                            <p>主治：风湿痹痛，筋脉拘挛，骨节酸痛，湿热黄疸</p>
+                        </div>
+                        <div class="herb-details">
+                            <h4>使用注意：</h4>
+                            <p>阴虚火旺者慎用</p>
+                            <h4>炮制方法：</h4>
+                            <p>生秦艽、酒秦艽</p>
+                            <div class="herb-tags">
+                                <span class="herb-tag">祛风</span>
+                                <span class="herb-tag">除湿</span>
+                                <span class="herb-tag">止痛</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="herb-card">
+                    <img src="../../媒体内容/中药知识/威灵仙.jpeg" alt="威灵仙" class="herb-image">
+                    <div class="herb-info">
+                        <h3>威灵仙</h3>
+                        <p>性味：辛、咸，温</p>
+                        <div class="herb-properties">
+                            <p>功效：祛风湿，通经络，止痛</p>
+                            <p>主治：风湿痹痛，肢体麻木，筋脉拘挛，关节不利</p>
+                        </div>
+                        <div class="herb-details">
+                            <h4>使用注意：</h4>
+                            <p>阴虚火旺者慎用</p>
+                            <h4>炮制方法：</h4>
+                            <p>生威灵仙、酒威灵仙</p>
+                            <div class="herb-tags">
+                                <span class="herb-tag">祛风</span>
+                                <span class="herb-tag">通络</span>
+                                <span class="herb-tag">止痛</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="herb-category">
+            <h2>化痰止咳类</h2>
+            <div class="herbs-grid">
+                <div class="herb-card">
+                    <img src="../../媒体内容/中药知识/桔梗.jpg" alt="桔梗" class="herb-image">
+                    <div class="herb-info">
+                        <h3>桔梗</h3>
+                        <p>性味：苦、辛，平</p>
+                        <div class="herb-properties">
+                            <p>功效：宣肺，祛痰，利咽，排脓</p>
+                            <p>主治：咳嗽痰多，胸闷不畅，咽喉肿痛，肺痈吐脓</p>
+                        </div>
+                        <div class="herb-details">
+                            <h4>使用注意：</h4>
+                            <p>阴虚火旺者慎用</p>
+                            <h4>炮制方法：</h4>
+                            <p>生桔梗、蜜桔梗</p>
+                            <div class="herb-tags">
+                                <span class="herb-tag">宣肺</span>
+                                <span class="herb-tag">祛痰</span>
+                                <span class="herb-tag">利咽</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="herb-card">
+                    <img src="../../媒体内容/中药知识/贝母.jpg" alt="贝母" class="herb-image">
+                    <div class="herb-info">
+                        <h3>贝母</h3>
+                        <p>性味：苦、甘，微寒</p>
+                        <div class="herb-properties">
+                            <p>功效：清热润肺，化痰止咳</p>
+                            <p>主治：肺热咳嗽，痰多气喘，肺燥干咳</p>
+                        </div>
+                        <div class="herb-details">
+                            <h4>使用注意：</h4>
+                            <p>脾胃虚寒者慎用</p>
+                            <h4>炮制方法：</h4>
+                            <p>生贝母、蜜贝母</p>
+                            <div class="herb-tags">
+                                <span class="herb-tag">清热</span>
+                                <span class="herb-tag">润肺</span>
+                                <span class="herb-tag">化痰</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2024 中医文化知识库 - 传承千年智慧</p>
+    </footer>
+
+    <script>
+        // 搜索功能
+        document.getElementById('herbSearch').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const herbCards = document.querySelectorAll('.herb-card');
+            
+            herbCards.forEach(card => {
+                const herbName = card.querySelector('h3').textContent.toLowerCase();
+                const herbDesc = card.querySelector('.herb-properties').textContent.toLowerCase();
+                if (herbName.includes(searchTerm) || herbDesc.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // 点击卡片显示详情
+        document.querySelectorAll('.herb-card').forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.toggle('active');
+            });
+        });
+    </script>
+    <script src="../js/main.js"></script>
+    <script src="../js/ai-chat.js"></script>
+</body>
+</html> 

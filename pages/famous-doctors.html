@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>名医风采 - 中医文化知识库</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/ai-chat.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #8B4513;
+            --secondary-color: #D2691E;
+            --accent-color: #CD853F;
+            --text-color: #4A4A4A;
+            --light-bg: #FDF5E6;
+            --white: #FFFFFF;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --quote-bg: #FFF3E0;
+            --quote-border: #FFE0B2;
+            --timeline-bg: #F5F5F5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: var(--light-bg);
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            border-bottom: 2px solid var(--primary-color);
+            height: 80px;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .doctors-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .doctor-section {
+            background: var(--white);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--accent-color);
+            transition: all 0.3s ease;
+        }
+        
+        .doctor-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .doctor-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+        }
+        
+        .doctor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .doctor-card {
+            background: var(--light-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid var(--accent-color);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .doctor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+        
+        .doctor-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .doctor-card h3::before {
+            content: '•';
+            color: var(--accent-color);
+            font-size: 1.5rem;
+        }
+        
+        .doctor-details {
+            display: none;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--accent-color);
+            animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .doctor-card.active .doctor-details {
+            display: block;
+        }
+        
+        .doctor-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid var(--accent-color);
+            transition: all 0.3s ease;
+        }
+
+        .doctor-card:hover .doctor-image {
+            transform: scale(1.02);
+        }
+
+        .doctor-quote {
+            font-style: italic;
+            color: var(--primary-color);
+            padding: 1.2rem;
+            border-left: 4px solid var(--accent-color);
+            margin: 1rem 0;
+            background: var(--quote-bg);
+            border-radius: 0 8px 8px 0;
+            position: relative;
+        }
+
+        .doctor-quote::before {
+            content: '"';
+            font-size: 3rem;
+            color: var(--accent-color);
+            position: absolute;
+            top: -1rem;
+            left: 0.5rem;
+            opacity: 0.3;
+        }
+
+        .doctor-contribution {
+            margin-top: 1.5rem;
+        }
+
+        .doctor-contribution h4 {
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .doctor-contribution h4::before {
+            content: '📚';
+        }
+
+        .doctor-contribution ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .doctor-contribution li {
+            margin-bottom: 0.8rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .doctor-contribution li::before {
+            content: "→";
+            color: var(--accent-color);
+            position: absolute;
+            left: 0;
+        }
+
+        .timeline {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: var(--timeline-bg);
+            border-radius: 8px;
+            border: 1px solid var(--accent-color);
+        }
+
+        .timeline-item {
+            margin-bottom: 1.2rem;
+            padding-left: 1.5rem;
+            border-left: 2px solid var(--accent-color);
+            position: relative;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-year {
+            font-weight: bold;
+            color: var(--primary-color);
+            display: inline-block;
+            margin-bottom: 0.5rem;
+            background: var(--white);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            border: 1px solid var(--accent-color);
+        }
+
+        .timeline-item p {
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        footer {
+            background: var(--primary-color);
+            color: var(--white);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding-top: 60px;
+            }
+
+            header {
+                height: 60px;
+            }
+
+            nav {
+                padding: 0 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .doctors-content {
+                padding: 1rem;
+            }
+
+            .doctor-section {
+                padding: 1.5rem;
+            }
+
+            .doctor-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .doctor-image {
+                height: 250px;
+            }
+
+            .doctor-quote {
+                padding: 1rem;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">中医文化</div>
+            <ul class="nav-links">
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="theory.html">中医理论</a></li>
+                <li><a href="herbs.html">中药知识</a></li>
+                <li><a href="treatment.html">治疗方法</a></li>
+                <li><a href="famous-doctors.html">名医风采</a></li>
+                <li><a href="quiz.html">体质测试</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="doctors-content">
+        <section class="doctor-section">
+            <h2>古代名医</h2>
+            <div class="doctor-grid">
+                <div class="doctor-card">
+                    <img src="../../媒体内容/名医风采/黄帝.jpg" alt="黄帝" class="doctor-image">
+                    <h3>黄帝</h3>
+                    <p>中医理论的奠基人，《黄帝内经》的主要作者</p>
+                    <div class="doctor-details">
+                        <div class="doctor-quote">
+                            "上工治未病，中工治欲病，下工治已病。"
+                        </div>
+                        <div class="doctor-contribution">
+                            <h4>主要贡献：</h4>
+                            <ul>
+                                <li>创立中医基础理论体系</li>
+                                <li>提出"天人合一"的整体观</li>
+                                <li>建立阴阳五行学说</li>
+                                <li>发展经络学说</li>
+                            </ul>
+                        </div>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <span class="timeline-year">约前2697年</span>
+                                <p>开始整理医学知识</p>
+                            </div>
+                            <div class="timeline-item">
+                                <span class="timeline-year">约前2598年</span>
+                                <p>完成《黄帝内经》</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="doctor-card">
+                    <img src="../../媒体内容/名医风采/张仲景.jpg" alt="张仲景" class="doctor-image">
+                    <h3>张仲景</h3>
+                    <p>东汉末年著名医学家，《伤寒杂病论》作者</p>
+                    <div class="doctor-details">
+                        <div class="doctor-quote">
+                            "进则救世，退则救民；不能为良相，亦当为良医。"
+                        </div>
+                        <div class="doctor-contribution">
+                            <h4>主要贡献：</h4>
+                            <ul>
+                                <li>创立六经辨证体系</li>
+                                <li>发展方剂学理论</li>
+                                <li>建立中医临床诊疗规范</li>
+                                <li>提出"辨证论治"原则</li>
+                            </ul>
+                        </div>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <span class="timeline-year">约150年</span>
+                                <p>开始行医</p>
+                            </div>
+                            <div class="timeline-item">
+                                <span class="timeline-year">约219年</span>
+                                <p>完成《伤寒杂病论》</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="doctor-card">
+                    <img src="../../媒体内容/名医风采/华佗.jpg" alt="华佗" class="doctor-image">
+                    <h3>华佗</h3>
+                    <p>东汉末年著名医学家，外科圣手。后人多用“神医华佗”称呼他。</p>
+                    <div class="doctor-details">
+                        <div class="doctor-quote">
+                            "自然之道养自然之身"
+                        </div>
+                        <div class="doctor-contribution">
+                            <h4>主要贡献：</h4>
+                            <ul>
+                                <li>开创外科手术先河</li>
+                                <li>发明麻沸散</li>
+                                <li>创立五禽戏</li>
+                                <li>发展针灸技术</li>
+                            </ul>
+                        </div>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <span class="timeline-year">约145年</span>
+                                <p>开始行医</p>
+                            </div>
+                            <div class="timeline-item">
+                                <span class="timeline-year">约208年</span>
+                                <p>发明麻沸散</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="doctor-section">
+            <h2>近现代名医</h2>
+            <div class="doctor-grid">
+                <div class="doctor-card">
+                    <img src="../../媒体内容/名医风采/叶天士.jpg" alt="叶天士" class="doctor-image">
+                    <h3>叶天士</h3>
+                    <p>清代著名医学家，温病学派代表人物</p>
+                    <div class="doctor-details">
+                        <div class="doctor-quote">
+                            "医可为而不可为。"
+                        </div>
+                        <div class="doctor-contribution">
+                            <h4>主要贡献：</h4>
+                            <ul>
+                                <li>创立温病学说</li>
+                                <li>发展卫气营血辨证</li>
+                                <li>完善中医诊断方法</li>
+                                <li>提出"三焦辨证"理论</li>
+                            </ul>
+                        </div>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <span class="timeline-year">1667年</span>
+                                <p>开始行医</p>
+                            </div>
+                            <div class="timeline-item">
+                                <span class="timeline-year">1746年</span>
+                                <p>完成《温热论》</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="doctor-card">
+                    <img src="../../媒体内容/名医风采/王清任.jpeg" alt="王清任" class="doctor-image">
+                    <h3>王清任</h3>
+                    <p>清代著名医学家，《医林改错》作者</p>
+                    <div class="doctor-details">
+                        <div class="doctor-quote">
+                            "治国良相，世代皆有;著书良医，无一全人。"
+                        </div>
+                        <div class="doctor-contribution">
+                            <h4>主要贡献：</h4>
+                            <ul>
+                                <li>发展解剖学知识</li>
+                                <li>创立活血化瘀理论</li>
+                                <li>完善中医诊断方法</li>
+                                <li>提出"气血辨证"理论</li>
+                            </ul>
+                        </div>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <span class="timeline-year">1768年</span>
+                                <p>开始行医</p>
+                            </div>
+                            <div class="timeline-item">
+                                <span class="timeline-year">1830年</span>
+                                <p>完成《医林改错》</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="doctor-card">
+                    <img src="../../媒体内容/名医风采/张锡纯.jpeg" alt="张锡纯" class="doctor-image">
+                    <h3>张锡纯</h3>
+                    <p>近代著名医学家，《医学衷中参西录》作者</p>
+                    <div class="doctor-details">
+                        <div class="doctor-quote">
+                            "医者当明三理，知其理而后能知其病。"
+                        </div>
+                        <div class="doctor-contribution">
+                            <h4>主要贡献：</h4>
+                            <ul>
+                                <li>中西医结合先驱</li>
+                                <li>发展方剂学理论</li>
+                                <li>完善中医诊断方法</li>
+                                <li>提出"衷中参西"理论</li>
+                            </ul>
+                        </div>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <span class="timeline-year">1860年</span>
+                                <p>开始行医</p>
+                            </div>
+                            <div class="timeline-item">
+                                <span class="timeline-year">1933年</span>
+                                <p>完成《医学衷中参西录》</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2024 中医文化知识库 - 传承千年智慧</p>
+    </footer>
+
+    <script>
+        document.querySelectorAll('.doctor-card').forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.toggle('active');
+            });
+        });
+    </script>
+    <script src="../js/main.js"></script>
+    <script src="../js/ai-chat.js"></script>
+</body>
+</html> 

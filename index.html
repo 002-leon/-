@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中医智慧 - 传承千年医学精华</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #8B4513;  /* 深棕色，象征中医传统 */
+            --secondary-color: #D2691E;  /* 红棕色，温暖色调 */
+            --accent-color: #CD853F;  /* 浅棕色，点缀用 */
+            --text-color: #4A4A4A;  /* 深灰色文字 */
+            --light-bg: #FDF5E6;  /* 米色背景 */
+            --white: #FFFFFF;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: var(--light-bg);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            border-bottom: 2px solid var(--primary-color);
+            transition: transform 0.3s ease;
+        }
+
+        header.hide {
+            transform: translateY(-100%);
+        }
+
+        .main-page header {
+            position: fixed;
+            transform: translateY(-100%);
+        }
+
+        .main-page header.show {
+            transform: translateY(0);
+        }
+
+        .main-page {
+            padding-top: 0;
+        }
+
+        .other-page {
+            padding-top: 80px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .hero {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 80vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--primary-color);
+            color: var(--white);
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: var(--shadow);
+        }
+
+        .cta-button:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .ai-tongue-analysis {
+            background: var(--white);
+            margin: 2rem auto;
+            max-width: 1200px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border: 1px solid var(--accent-color);
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .analysis-main {
+            flex: 1;
+            min-width: 300px;
+            padding: 2rem;
+        }
+
+        .analysis-sidebar {
+            flex: 1;
+            min-width: 300px;
+            padding: 2rem;
+            background: var(--light-bg);
+            border-left: 1px solid var(--accent-color);
+        }
+
+        .analysis-container {
+            padding: 1rem;
+            min-height: 400px;
+        }
+
+        .upload-area {
+            border: 3px dashed var(--accent-color);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: var(--light-bg);
+            margin-bottom: 1rem;
+        }
+
+        .tongue-principles {
+            margin-top: 2rem;
+        }
+
+        .principle-item {
+            background: var(--white);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .principle-item h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .principle-item p {
+            color: var(--text-color);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .principle-item i {
+            color: var(--accent-color);
+        }
+
+        .analysis-result {
+            display: none;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+
+        .result-image {
+            flex: 1;
+        }
+
+        .result-image img {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            border: 2px solid var(--accent-color);
+        }
+
+        .result-details {
+            flex: 2;
+        }
+
+        .result-details h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .analysis-summary {
+            background: var(--light-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            border: 1px solid var(--accent-color);
+        }
+
+        .result-section {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: var(--white);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .result-section h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .result-content {
+            color: var(--text-color);
+        }
+
+        .analysis-item {
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            background: var(--light-bg);
+            border-radius: 5px;
+            border-left: 3px solid var(--accent-color);
+        }
+
+        .disclaimer {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: #FFF3E0;
+            border: 1px solid #FFE0B2;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .disclaimer i {
+            color: #F57C00;
+        }
+
+        .retry-button {
+            background: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .retry-button:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .features {
+            padding: 4rem 2rem 5rem 2rem;
+            background: var(--white);
+        }
+        .features h2 {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--primary-color);
+            font-size: 2.7rem;
+            position: relative;
+            padding-bottom: 1.2rem;
+            letter-spacing: 2px;
+        }
+        .features h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            border-radius: 2px;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(260px, 1fr));
+            gap: 2.5rem 3rem;
+            justify-content: center;
+            align-items: stretch;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        @media (max-width: 900px) {
+            .feature-grid {
+                grid-template-columns: 1fr;
+                max-width: 95vw;
+                gap: 2rem;
+            }
+        }
+        .feature-card {
+            background: linear-gradient(135deg, #fdf5e6 60%, #f7e1c6 100%);
+            padding: 2.5rem 2rem 2rem 2rem;
+            border-radius: 20px;
+            text-align: center;
+            transition: box-shadow 0.3s, transform 0.3s;
+            border: none;
+            box-shadow: 0 4px 24px 0 rgba(139,69,19,0.08), 0 1.5px 6px 0 rgba(205,133,63,0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 260px;
+            position: relative;
+        }
+        .feature-card:hover {
+            box-shadow: 0 8px 32px 0 rgba(139,69,19,0.16), 0 3px 12px 0 rgba(205,133,63,0.12);
+            transform: translateY(-8px) scale(1.03);
+        }
+        .feature-card i {
+            font-size: 3.2rem;
+            color: var(--primary-color);
+            margin-bottom: 1.2rem;
+            background: linear-gradient(135deg, var(--primary-color) 60%, var(--accent-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .feature-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+        }
+        .feature-card p {
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+            min-height: 48px;
+        }
+        .feature-card .learn-more {
+            margin-top: auto;
+            display: inline-block;
+            background: var(--primary-color);
+            color: var(--white);
+            padding: 0.6rem 1.6rem;
+            border-radius: 25px;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 1rem;
+            box-shadow: 0 2px 8px rgba(139,69,19,0.08);
+            transition: background 0.3s, transform 0.2s;
+        }
+        .feature-card .learn-more:hover {
+            background: var(--secondary-color);
+            transform: scale(1.07);
+        }
+
+        footer {
+            background: var(--primary-color);
+            color: var(--white);
+            padding: 3rem 0 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section a {
+            color: #E0E0E0;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: var(--white);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #E0E0E0;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .analysis-result {
+                flex-direction: column;
+            }
+            
+            .ai-tongue-analysis {
+                flex-direction: column;
+            }
+            
+            .analysis-sidebar {
+                border-left: none;
+                border-top: 1px solid var(--accent-color);
+            }
+        }
+
+        /* AI悬浮窗样式 */
+        .ai-chat-widget {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        .ai-chat-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: move;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+            user-select: none;
+            pointer-events: auto;
+            position: absolute;
+            transform: translate(0, 0);
+            will-change: transform;
+        }
+
+        .ai-chat-button:hover {
+            transform: scale(1.1);
+            background: var(--secondary-color);
+        }
+
+        .ai-chat-button.dragging {
+            cursor: grabbing;
+            opacity: 0.9;
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+            transition: none;
+        }
+
+        .ai-chat-window {
+            position: fixed;
+            width: 350px;
+            height: 500px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            pointer-events: auto;
+            z-index: 10000;
+        }
+
+        .ai-chat-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: move;
+            user-select: none;
+        }
+
+        .ai-chat-header .drag-handle {
+            flex: 1;
+            cursor: move;
+        }
+
+        .ai-chat-header .close-button {
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+
+        .ai-chat-header .close-button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .ai-chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+        }
+
+        .ai-chat-input {
+            padding: 15px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+
+        .ai-chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+        }
+
+        .ai-chat-input button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 80%;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .user-message {
+            background: #e3f2fd;
+            margin-left: auto;
+        }
+
+        .ai-message {
+            background: #f5f5f5;
+        }
+
+        /* 加载动画样式 */
+        .typing-indicator {
+            display: none;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            width: fit-content;
+        }
+
+        .typing-indicator span {
+            height: 8px;
+            width: 8px;
+            background: var(--primary-color);
+            display: inline-block;
+            border-radius: 50%;
+            margin-right: 5px;
+            animation: typing 1s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+            margin-right: 0;
+        }
+
+        @keyframes typing {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0); }
+        }
+
+        /* 进度条样式 */
+        .progress-container {
+            display: none;
+            width: 100%;
+            height: 4px;
+            background: #f0f0f0;
+            border-radius: 2px;
+            margin: 5px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: var(--primary-color);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        /* 轮播图样式 */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            height: 80vh;
+            overflow: hidden;
+            background: #000;
+            margin: 0;
+            padding: 0;
+        }
+
+        .carousel {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .carousel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .carousel-slide.active {
+            opacity: 1;
+        }
+
+        .carousel-slide img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.85);
+            transform: scale(1.1);
+            transition: transform 1s ease-in-out;
+            margin: 0;
+            padding: 0;
+        }
+
+        .carousel-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: white;
+            padding: 2rem;
+            max-width: 1000px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease-in-out;
+        }
+
+        .carousel-slide.active .carousel-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .carousel-content h1 {
+            font-size: 4.5rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .carousel-content p {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        .carousel-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.8rem;
+            transition: all 0.3s ease;
+            z-index: 2;
+            backdrop-filter: blur(5px);
+        }
+
+        .carousel-button:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .carousel-button.prev {
+            left: 40px;
+        }
+
+        .carousel-button.next {
+            right: 40px;
+        }
+
+        .carousel-indicators {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 2;
+        }
+
+        .indicator {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0;
+        }
+
+        .indicator:hover {
+            background: rgba(255, 255, 255, 0.5);
+            transform: scale(1.2);
+        }
+
+        .indicator.active {
+            background: white;
+            transform: scale(1.2);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        @media (max-width: 1200px) {
+            .carousel-content h1 {
+                font-size: 3.5rem;
+            }
+            
+            .carousel-content p {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .carousel-container {
+                height: 60vh;
+            }
+
+            .carousel-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .carousel-content p {
+                font-size: 1.2rem;
+            }
+            
+            .carousel-button {
+                width: 45px;
+                height: 45px;
+                font-size: 1.4rem;
+            }
+
+            .carousel-button.prev {
+                left: 20px;
+            }
+
+            .carousel-button.next {
+                right: 20px;
+            }
+
+            .carousel-indicators {
+                bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="../主界面图片/yin-and-yang-152420_1280.png" alt="中医智慧">
+                <span>中医智慧</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">首页</a></li>
+                <li><a href="pages/theory.html">中医理论</a></li>
+                <li><a href="pages/herbs.html">中药知识</a></li>
+                <li><a href="pages/treatment.html">治疗方法</a></li>
+                <li><a href="pages/famous-doctors.html">名医风采</a></li>
+                <li><a href="pages/quiz.html">体质测试</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="hero">
+            <div class="carousel-container">
+                <div class="carousel">
+                    <div class="carousel-slide active">
+                        <img src="../主界面图片/chinese-medicine-3666183.jpg" alt="中医养生">
+                        <div class="carousel-content">
+                            <h1>传承千年智慧</h1>
+                            <p>探索中医文化的精髓，感受传统医学的魅力</p>
+                        </div>
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="../主界面图片/traditional-chinese-medicine-3528232.jpg" alt="中药文化">
+                        <div class="carousel-content">
+                            <h1>中药宝库</h1>
+                            <p>探索中药的奥秘，了解传统药材的功效</p>
+                        </div>
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="../主界面图片/acupuncture-5126777.jpg" alt="针灸疗法">
+                        <div class="carousel-content">
+                            <h1>针灸疗法</h1>
+                            <p>体验传统针灸的神奇，感受经络调理的奥妙</p>
+                        </div>
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="../主界面图片/traditional-chinese-medicine-5397193.jpg" alt="中医养生">
+                        <div class="carousel-content">
+                            <h1>养生之道</h1>
+                            <p>学习中医养生智慧，追求健康生活</p>
+                        </div>
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="../主界面图片/books-8067850.jpg" alt="中医理论">
+                        <div class="carousel-content">
+                            <h1>中医理论</h1>
+                            <p>深入了解阴阳五行，探索中医理论体系</p>
+                        </div>
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="../主界面图片/chinese-medicine-3666268.jpg" alt="名医传承">
+                        <div class="carousel-content">
+                            <h1>名医传承</h1>
+                            <p>了解历代名医故事，传承中医精髓</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-button prev" id="prevButton">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="carousel-button next" id="nextButton">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <div class="carousel-indicators">
+                    <button class="indicator active" data-slide="0"></button>
+                    <button class="indicator" data-slide="1"></button>
+                    <button class="indicator" data-slide="2"></button>
+                    <button class="indicator" data-slide="3"></button>
+                    <button class="indicator" data-slide="4"></button>
+                    <button class="indicator" data-slide="5"></button>
+                </div>
+            </div>
+        </div>
+
+        <section class="ai-tongue-analysis">
+            <div class="section-header">
+                <h1>中医智能诊断</h1>
+                <p class="section-subtitle">传承千年智慧，融合现代科技</p>
+            </div>
+            
+            <div class="analysis-grid">
+                <div class="analysis-main">
+                    <div class="analysis-header">
+                        <h2>AI舌诊分析</h2>
+                        <div class="analysis-intro">
+                            <div class="intro-icon">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <div class="intro-content">
+                                <h3>为什么要进行舌诊分析？</h3>
+                                <p>舌诊是中医"望诊"的重要组成部分，通过观察舌象可以了解人体脏腑功能、气血盛衰、疾病性质等。舌诊具有直观、简便、无创的特点，使用户对中医有初步了解。</p>
+                                <ul class="intro-benefits">
+                                    <li><i class="fas fa-check-circle"></i> 快速了解体质状况</li>
+                                    <li><i class="fas fa-check-circle"></i> 发现潜在健康问题</li>
+                                    <li><i class="fas fa-check-circle"></i> 获取个性化养生建议</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="analysis-container">
+                        <div class="upload-area" id="uploadArea">
+                            <div class="upload-icon">
+                                <i class="fas fa-camera"></i>
+                            </div>
+                            <div class="upload-text">
+                                <h3>上传舌苔照片</h3>
+                                <p>点击或拖拽上传舌苔照片</p>
+                                <p class="upload-hint">支持 JPG、PNG 格式，大小不超过 2MB</p>
+                            </div>
+                            <input type="file" id="tongueImage" accept="image/jpeg,image/png" hidden>
+                        </div>
+                        <div class="analysis-result" id="analysisResult" style="display: none;">
+                            <div class="result-image">
+                                <img id="previewImage" src="" alt="舌苔照片">
+                            </div>
+                            <div class="result-details">
+                                <h3>舌诊分析结果</h3>
+                                <div id="analysisContent"></div>
+                                <div class="disclaimer">
+                                    <i class="fas fa-info-circle"></i>
+                                    <p>本分析结果仅供参考，不能替代专业医疗诊断</p>
+                                </div>
+                                <button class="retry-button" onclick="resetAnalysis()">重新上传</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analysis-sidebar">
+                    <h3>舌诊原理</h3>
+                    <div class="tongue-principles">
+                        <div class="principle-item">
+                            <h4><i class="fas fa-microscope"></i> 舌质与舌苔</h4>
+                            <p>舌质反映脏腑气血的盛衰，舌苔反映胃气的强弱。舌质淡红、苔薄白为正常，舌质红、苔黄腻多属热证。</p>
+                        </div>
+                        <div class="principle-item">
+                            <h4><i class="fas fa-layer-group"></i> 舌体形态</h4>
+                            <p>舌体胖大、有齿痕多属气虚或阳虚；舌体瘦小、色淡多属血虚；舌体强硬、歪斜多属中风先兆。</p>
+                        </div>
+                        <div class="principle-item">
+                            <h4><i class="fas fa-palette"></i> 舌色变化</h4>
+                            <p>舌色淡白多属气血不足；舌色红绛多属热证；舌色紫暗多属血瘀；舌色青紫多属寒证。</p>
+                        </div>
+                        <div class="principle-item">
+                            <h4><i class="fas fa-water"></i> 舌苔特征</h4>
+                            <p>苔薄白为正常；苔厚腻多属湿浊；苔黄燥多属热盛；苔灰黑多属寒极或热极。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="analysis-features">
+                <div class="feature-card">
+                    <i class="fas fa-history"></i>
+                    <h3>传统智慧</h3>
+                    <p>传承千年中医诊断经验，融合现代科技</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-robot"></i>
+                    <h3>AI技术</h3>
+                    <p>运用先进的人工智能技术，提供精准分析</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-user-md"></i>
+                    <h3>专业指导</h3>
+                    <p>基于中医理论，提供专业的养生建议</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>健康追踪</h3>
+                    <p>记录分析结果，追踪健康状况变化</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2>中医特色</h2>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-book-medical"></i>
+                        <h3>中医理论</h3>
+                        <p>探索阴阳五行、脏腑经络等中医基础理论</p>
+                        <a href="pages/theory.html" class="learn-more">了解更多</a>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-mortar-pestle"></i>
+                        <h3>中药知识</h3>
+                        <p>了解常用中药的功效与使用方法</p>
+                        <a href="pages/herbs.html" class="learn-more">了解更多</a>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-hand-holding-medical"></i>
+                        <h3>治疗方法</h3>
+                        <p>针灸、推拿、艾灸等传统疗法介绍</p>
+                        <a href="pages/treatment.html" class="learn-more">了解更多</a>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-user-md"></i>
+                        <h3>名医风采</h3>
+                        <p>了解历代名医的生平事迹与贡献</p>
+                        <a href="pages/famous-doctors.html" class="learn-more">了解更多</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>关于我们</h3>
+                    <p>致力于传播中医文化，让更多人了解中医智慧</p>
+                </div>
+                <div class="footer-section">
+                    <h3>快速链接</h3>
+                    <ul>
+                        <li><a href="pages/theory.html">中医理论</a></li>
+                        <li><a href="pages/herbs.html">中药知识</a></li>
+                        <li><a href="pages/treatment.html">治疗方法</a></li>
+                        <li><a href="pages/famous-doctors.html">名医风采</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>联系我们</h3>
+                    <p>邮箱：contact@tcm-wisdom.com</p>
+                    <p>电话：400-123-4567</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 中医智慧. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/ai-chat.js"></script>
+    <script>
+        // 页面类型判断
+        function isMainPage() {
+            return window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/');
+        }
+
+        // 初始化页面类型
+        document.body.classList.add(isMainPage() ? 'main-page' : 'other-page');
+
+        // Header显示控制
+        let headerTimeout;
+        const header = document.querySelector('header');
+        const mainContent = document.querySelector('.hero');
+
+        if (isMainPage()) {
+            // 主页面header控制
+            mainContent.addEventListener('mouseenter', () => {
+                clearTimeout(headerTimeout);
+                header.classList.add('show');
+            });
+
+            mainContent.addEventListener('mouseleave', () => {
+                headerTimeout = setTimeout(() => {
+                    header.classList.remove('show');
+                }, 1000);
+            });
+
+            // 当鼠标移动到header上时保持显示
+            header.addEventListener('mouseenter', () => {
+                clearTimeout(headerTimeout);
+                header.classList.add('show');
+            });
+
+            header.addEventListener('mouseleave', () => {
+                headerTimeout = setTimeout(() => {
+                    header.classList.remove('show');
+                }, 1000);
+            });
+        }
+
+        // 滚动控制
+        let lastScrollTop = 0;
+        window.addEventListener('scroll', () => {
+            if (!isMainPage()) {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                if (scrollTop > lastScrollTop) {
+                    // 向下滚动
+                    header.classList.add('hide');
+                } else {
+                    // 向上滚动
+                    header.classList.remove('hide');
+                }
+                lastScrollTop = scrollTop;
+            }
+        });
+
+        // 舌苔分析相关功能
+        const uploadArea = document.getElementById('uploadArea');
+        const tongueImage = document.getElementById('tongueImage');
+        const analysisResult = document.getElementById('analysisResult');
+        const previewImage = document.getElementById('previewImage');
+        const analysisContent = document.getElementById('analysisContent');
+
+        // 点击上传
+        uploadArea.addEventListener('click', () => {
+            tongueImage.click();
+        });
+
+        // 拖拽上传
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            
+            const file = e.dataTransfer.files[0];
+            if (file && isImageFile(file)) {
+                handleImageFile(file);
+            } else {
+                showError('请上传正确的图片格式（JPG、PNG）');
+            }
+        });
+
+        // 文件选择上传
+        tongueImage.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file && isImageFile(file)) {
+                handleImageFile(file);
+            } else {
+                showError('请上传正确的图片格式（JPG、PNG）');
+            }
+        });
+
+        // 检查文件类型
+        function isImageFile(file) {
+            return file.type === 'image/jpeg' || file.type === 'image/png';
+        }
+
+        // 模拟AI分析
+        async function simulateAIAnalysis() {
+            // 模拟API延迟
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
+            // 返回模拟的分析结果
+            const mockResults = [
+                {
+                    tongueQuality: {
+                        color: "淡红色，属正常范围",
+                        shape: "舌体适中，边缘整齐"
+                    },
+                    tongueCoating: {
+                        thickness: "薄苔",
+                        texture: "润泽适中",
+                        color: "白苔"
+                    },
+                    constitution: "平和体质，整体健康状况良好",
+                    advice: [
+                        "保持规律作息，适量运动",
+                        "饮食清淡，多食新鲜蔬果",
+                        "避免过度劳累，保持心情愉悦"
+                    ]
+                },
+                {
+                    tongueQuality: {
+                        color: "舌质偏红",
+                        shape: "舌体略胖大"
+                    },
+                    tongueCoating: {
+                        thickness: "苔薄",
+                        texture: "略干",
+                        color: "黄苔"
+                    },
+                    constitution: "湿热体质倾向",
+                    advice: [
+                        "清淡饮食，避免油腻辛辣",
+                        "多饮水，适当运动排汗",
+                        "可适量食用清热利湿的食物"
+                    ]
+                },
+                {
+                    tongueQuality: {
+                        color: "舌质淡白",
+                        shape: "舌体偏瘦"
+                    },
+                    tongueCoating: {
+                        thickness: "苔薄",
+                        texture: "偏干",
+                        color: "白苔"
+                    },
+                    constitution: "气虚体质倾向",
+                    advice: [
+                        "注意保暖，避免受凉",
+                        "适当食用补气食物，如黄芪、人参",
+                        "保持充足睡眠，避免过度劳累"
+                    ]
+                }
+            ];
+
+            return mockResults[Math.floor(Math.random() * mockResults.length)];
+        }
+
+        // 处理图片文件
+        async function handleImageFile(file) {
+            if (file.size > 2 * 1024 * 1024) {
+                showError('图片大小不能超过2MB');
+                return;
+            }
+
+            // 显示预览
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                previewImage.src = e.target.result;
+                uploadArea.style.display = 'none';
+                analysisResult.style.display = 'flex';
+            };
+            reader.readAsDataURL(file);
+
+            // 显示加载状态
+            analysisContent.innerHTML = `
+                <div class="loading-state">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>正在分析舌象，请稍候...</p>
+                    <p style="font-size: 0.9rem; color: #888; margin-top: 1rem;">
+                        注意：这是演示版本，使用模拟数据
+                    </p>
+                </div>
+            `;
+
+            try {
+                // 使用模拟分析
+                const analysis = await simulateAIAnalysis();
+                
+                // 显示分析结果
+                analysisContent.innerHTML = `
+                    <div class="analysis-summary">
+                        <div class="result-section">
+                            <h4><i class="fas fa-microscope"></i> 舌质分析</h4>
+                            <div class="result-content">
+                                <p class="analysis-item">颜色：${analysis.tongueQuality.color}</p>
+                                <p class="analysis-item">形态：${analysis.tongueQuality.shape}</p>
+                            </div>
+                        </div>
+                        <div class="result-section">
+                            <h4><i class="fas fa-layer-group"></i> 舌苔分析</h4>
+                            <div class="result-content">
+                                <p class="analysis-item">厚度：${analysis.tongueCoating.thickness}</p>
+                                <p class="analysis-item">质地：${analysis.tongueCoating.texture}</p>
+                                <p class="analysis-item">颜色：${analysis.tongueCoating.color}</p>
+                            </div>
+                        </div>
+                        <div class="result-section">
+                            <h4><i class="fas fa-heartbeat"></i> 体质倾向</h4>
+                            <div class="result-content">
+                                <p>${analysis.constitution}</p>
+                            </div>
+                        </div>
+                        <div class="result-section">
+                            <h4><i class="fas fa-lightbulb"></i> 养生建议</h4>
+                            <div class="result-content">
+                                ${analysis.advice.map(item => `<p class="analysis-item">${item}</p>`).join('')}
+                            </div>
+                        </div>
+                        <div style="text-align: center; margin-top: 1rem; padding: 1rem; background: #f0f4ff; border-radius: 8px;">
+                            <small style="color: #667eea;">
+                                ⚠️ 演示版本 - 使用模拟数据展示功能
+                            </small>
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('分析错误:', error);
+                showError(`分析失败：${error.message}`);
+            }
+        }
+
+        // 显示错误信息
+        function showError(message) {
+            analysisContent.innerHTML = `
+                <div class="error-message">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <p>${message}</p>
+                    <button class="retry-button" onclick="resetAnalysis()">重试</button>
+                </div>
+            `;
+        }
+
+        // 重置分析
+        function resetAnalysis() {
+            uploadArea.style.display = 'flex';
+            analysisResult.style.display = 'none';
+            tongueImage.value = '';
+            analysisContent.innerHTML = '';
+        }
+
+        // 添加一些交互效果
+        document.addEventListener('DOMContentLoaded', function() {
+            // 为特色卡片添加点击效果
+            const featureCards = document.querySelectorAll('.feature-card');
+            featureCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                });
+            });
+        });
+
+        // 轮播图功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.carousel-slide');
+            const indicators = document.querySelectorAll('.indicator');
+            const prevButton = document.getElementById('prevButton');
+            const nextButton = document.getElementById('nextButton');
+            let currentSlide = 0;
+            let slideInterval;
+
+            // 显示指定幻灯片
+            function showSlide(index) {
+                slides.forEach(slide => slide.classList.remove('active'));
+                indicators.forEach(indicator => indicator.classList.remove('active'));
+                
+                slides[index].classList.add('active');
+                indicators[index].classList.add('active');
+                currentSlide = index;
+            }
+
+            // 下一张幻灯片
+            function nextSlide() {
+                let next = currentSlide + 1;
+                if (next >= slides.length) {
+                    next = 0;
+                }
+                showSlide(next);
+            }
+
+            // 上一张幻灯片
+            function prevSlide() {
+                let prev = currentSlide - 1;
+                if (prev < 0) {
+                    prev = slides.length - 1;
+                }
+                showSlide(prev);
+            }
+
+            // 自动播放
+            function startSlideShow() {
+                slideInterval = setInterval(nextSlide, 5000);
+            }
+
+            // 停止自动播放
+            function stopSlideShow() {
+                clearInterval(slideInterval);
+            }
+
+            // 事件监听
+            prevButton.addEventListener('click', () => {
+                prevSlide();
+                stopSlideShow();
+                startSlideShow();
+            });
+
+            nextButton.addEventListener('click', () => {
+                nextSlide();
+                stopSlideShow();
+                startSlideShow();
+            });
+
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => {
+                    showSlide(index);
+                    stopSlideShow();
+                    startSlideShow();
+                });
+            });
+
+            // 鼠标悬停时暂停自动播放
+            const carousel = document.querySelector('.carousel-container');
+            carousel.addEventListener('mouseenter', stopSlideShow);
+            carousel.addEventListener('mouseleave', startSlideShow);
+
+            // 开始自动播放
+            startSlideShow();
+        });
+    </script>
+</body>
+</html> 
