@@ -60,12 +60,12 @@ tcm-wisdom-website/
 
 1. 克隆仓库：
 ```bash
-git clone 
+git clone https://github.com/002-leon/-.git
 ```
 
 2. 进入项目目录：
 ```bash
-cd tcm-wisdom-website
+cd tcm(2)(5)
 ```
 
 3. 直接在浏览器中打开`index.html`文件即可运行
@@ -90,7 +90,7 @@ cd tcm-wisdom-website
 - 进度条指示
 
 ### 响应式设计
-- 移动端优先设计理念
+- 网页端优先设计理念
 - 媒体查询适配不同屏幕尺寸
 - 触摸友好的交互元素
 - 内容重新排列适应小屏幕
